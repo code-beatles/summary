@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "summary"
+version = "0.1.0"
+description = ""
+authors = ["Kirill Klenov <horneds@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiosqlite = "*"
+muffin = "*"
+muffin-rest = "*"
+muffin-peewee-aio = "*"
+muffin-admin = "*"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0"
+pre-commit = "^3"
+pytest-aio = "^1"
+pytest-mypy = "*"
+pytest-socket = "*"
+ruff = "^0"
+
+[tool.pytest.ini_options]
+addopts = "-xslv --disable-socket --allow-unix-socket"
+muffin_app = "summary"
+muffin_config = "summary.config.tests"
+python_files = "*test*.py"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
