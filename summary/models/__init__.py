@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import datetime as dt
+from typing import Any
+
 from peewee_aio import AIOModel, fields
 
-from summary import db, youtube
+from summary import db, together_ai, youtube
 
 
 @db.register
@@ -15,33 +18,35 @@ class Video(AIOModel):
     async def update_captions(self):
         if not self.captions_updated:
             res = await youtube.get_captions(self.id)
-            items = res["items"]
             return (
                 await Caption.insert_many(
                     [
                         {
                             "video": self,
-                            "id": item["id"],
-                            "language": item["snippet"]["language"],
-                            "auto_generated": item["snippet"]["trackKind"].lower()
-                            == "asr",
+                            "language": item["language"],
+                            "auto_generated": item["auto_generated"],
+                            "url": item["url"],
                         }
-                        for item in items
+                        for item in res
                     ]
                 )
                 .on_conflict_ignore()
                 .returning(Caption)
             )
+            self.caption_updated = dt.datetime.unow()
+            await self.save()
 
         return self.captions
 
 
 @db.register
 class Caption(AIOModel):
-    id = fields.CharField(primary_key=True)
+    id = fields.AutoField(primary_key=True)
     language = fields.CharField()
+    url = fields.CharField()
     auto_generated = fields.BooleanField()
-    text = fields.TextField(null=True)
+
+    data: fields.GenericField[list[dict[str, Any]]] = db.JSONField(null=True)
 
     video = fields.ForeignKeyField(Video, backref="captions")
 
@@ -49,20 +54,59 @@ class Caption(AIOModel):
         indexes = ((("video", "language"), True),)
 
     async def download(self):
-        if self.text is None:
-            self.text = await youtube.get_caption(self.id)
+        if self.data is None:
+            self.data = await youtube.download_caption(self.url)
             await self.save()
 
-        return self.text
+        return self.data
+
+    @property
+    def text(self):
+        return "\n".join(item["text"] for item in self.data)
 
 
 @db.register
 class Summary(AIOModel):
     id = fields.AutoField(primary_key=True)
-    text = fields.TextField()
     language = fields.CharField()
+
+    title = fields.TextField()
+    summary = fields.TextField()
+    keynotes = fields.TextField()
 
     video = fields.ForeignKeyField(Video, backref="summaries")
 
     class Meta:
         indexes = ((("video", "language"), True),)
+
+    @classmethod
+    def parse(cls, text: str):
+        head, _, summary = text.partition("\n\n**Summary:**")
+        head, _, keynotes = head.partition("\n\n**Bullet Points:**")
+        title = head[len("**Title:** ") :]
+
+        return {
+            "title": title.strip(),
+            "summary": summary.strip(),
+            "keynotes": keynotes.strip(),
+        }
+
+    @classmethod
+    async def generate(cls, caption: Caption):
+        text_8kb = caption.text[:8000]
+        promt = f"Write a title, 5 bullet points and summary for the following text: {text_8kb}"
+        res = await together_ai.api.chat.completions.post(
+            raise_for_status=False,
+            json={
+                "model": "meta-llama/Llama-3-8b-chat-hf",
+                "messages": [{"role": "system", "content": promt}],
+            },
+        )
+
+        content = res["choices"][0]["message"]["content"]
+        # Parse result
+        return await cls.create(
+            video=caption.video_id,
+            language=caption.language,
+            **cls.parse(content),
+        )

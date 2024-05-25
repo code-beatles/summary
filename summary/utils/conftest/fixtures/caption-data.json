@@ -1,0 +1,4153 @@
+[
+  {"text": "OK, so what are we\ngoing to do for today?", "start": 5.23, "duration": 2.23}, {"text": "So the main content\nfor today is to go", "start": 7.46, "duration": 5.15}, {"text": "through sort of more\nstuff about word vectors,", "start": 12.61, "duration": 4.08}, {"text": "including touching\non word senses", "start": 16.69, "duration": 2.25}, {"text": "and then introducing the notion\nof neural network classifiers.", "start": 18.94, "duration": 4.27}, {"text": "So our biggest goal is that\nby the end of today's class", "start": 23.21, "duration": 3.53}, {"text": "you should feel like\nyou could confidently", "start": 26.74, "duration": 2.4}, {"text": "look at one of the\nword embeddings papers,", "start": 29.14, "duration": 2.43}, {"text": "such as the Google word2vec\npaper or the GLoVe paper", "start": 31.57, "duration": 3.99}, {"text": "or Sanjeev Arora's paper\nthat we'll come to later.", "start": 35.56, "duration": 2.7}, {"text": "And feel like yeah, I\ncan understand this.", "start": 38.26, "duration": 2.58}, {"text": "I know what they're\ndoing and it makes sense.", "start": 40.84, "duration": 2.62}, {"text": "So let's go back\nto where we were.", "start": 43.46, "duration": 2.4}, {"text": "So this was introducing\nthis model of word2vec", "start": 45.86, "duration": 3.83}, {"text": "and [AUDIO OUT] idea was that\nwe started with random word", "start": 49.69, "duration": 6.12}, {"text": "vectors and then\nwe're going to--", "start": 55.81, "duration": 2.04}, {"text": "we have a big corpus\nof text and we're", "start": 57.85, "duration": 1.86}, {"text": "going to iterate through each\nword in the whole corpus.", "start": 59.71, "duration": 3.18}, {"text": "And for each\nposition we're going", "start": 62.89, "duration": 2.099}, {"text": "to try and predict what words\nsurround our center word.", "start": 64.989, "duration": 5.101}, {"text": "And we're going to do that\nwith a probability distribution", "start": 70.09, "duration": 3.18}, {"text": "that's defined in terms of the\ndot product between the word", "start": 73.27, "duration": 5.19}, {"text": "vectors for the center\nword and the context words.", "start": 78.46, "duration": 4.47}, {"text": "And so that will\ngive a probability", "start": 82.93, "duration": 1.59}, {"text": "estimate of a word appearing\nin the context of into.", "start": 84.52, "duration": 3.45}, {"text": "Well actual words did\noccur in the context", "start": 87.97, "duration": 2.76}, {"text": "of into on this occasion.", "start": 90.73, "duration": 1.68}, {"text": "So what we're\ngoing to want to do", "start": 92.41, "duration": 1.77}, {"text": "is sort of make it more likely\nthat turning problems, banking,", "start": 94.18, "duration": 3.9}, {"text": "and crises will turn up\nin the context of into.", "start": 98.08, "duration": 3.75}, {"text": "And so that's learning,\nupdating the word vectors", "start": 101.83, "duration": 3.49}, {"text": "so that they can predict actual\nsurrounding words better.", "start": 105.32, "duration": 4.28}, {"text": "And then the thing\nthat's almost magical", "start": 109.6, "duration": 2.82}, {"text": "is that doing no more than\nthis simple algorithm,", "start": 112.42, "duration": 3.45}, {"text": "this allows us to\nlearn word vectors that", "start": 115.87, "duration": 2.64}, {"text": "capture well word similarity\nand meaningful directions", "start": 118.51, "duration": 3.78}, {"text": "in a wordspace.", "start": 122.29, "duration": 2.62}, {"text": "So more precisely, right,\nfor this model the only", "start": 124.91, "duration": 4.08}, {"text": "parameters of this model\nare the word vectors.", "start": 128.99, "duration": 3.73}, {"text": "So we have outside word\nvectors and center word vectors", "start": 132.72, "duration": 3.17}, {"text": "for each word.", "start": 135.89, "duration": 1.23}, {"text": "And then we're taking\ntheir dot product", "start": 137.12, "duration": 2.94}, {"text": "to get a probability--\nwell, we're", "start": 140.06, "duration": 2.91}, {"text": "taking a dot product\nto get a score", "start": 142.97, "duration": 2.07}, {"text": "of how likely a\nparticular outside word is", "start": 145.04, "duration": 2.73}, {"text": "to occur with the center word.", "start": 147.77, "duration": 1.62}, {"text": "And then we're using the\nsoftmax transformation", "start": 149.39, "duration": 2.67}, {"text": "to convert those scores into\nprobabilities as I discussed", "start": 152.06, "duration": 3.48}, {"text": "last time, and I kind of come\nback to at the end this time.", "start": 155.54, "duration": 4.71}, {"text": "A couple of things\nto note, this model", "start": 160.25, "duration": 3.3}, {"text": "is what we call in NLP,\na bag of words model.", "start": 163.55, "duration": 4.06}, {"text": "So bag of words\nmodels are models", "start": 167.61, "duration": 2.3}, {"text": "that don't actually pay\nany attention to word order", "start": 169.91, "duration": 3.3}, {"text": "or position.", "start": 173.21, "duration": 0.72}, {"text": "It doesn't matter if you're\nnext to the center word", "start": 173.93, "duration": 2.16}, {"text": "or a bit further away\non the left or right.", "start": 176.09, "duration": 2.61}, {"text": "The probability estimate\nwould be the same.", "start": 178.7, "duration": 3.21}, {"text": "And that seems like a very\ncrude model of language", "start": 181.91, "duration": 3.66}, {"text": "that will offend any linguist.", "start": 185.57, "duration": 2.1}, {"text": "And it is a very crude\nmodel of language.", "start": 187.67, "duration": 1.95}, {"text": "And we'll move on to better\nmodels of language as we go on.", "start": 189.62, "duration": 3.36}, {"text": "But even that crude\nmodel of language", "start": 192.98, "duration": 2.13}, {"text": "is enough to learn quite a\nlot about the probabilities--", "start": 195.11, "duration": 5.152}, {"text": "sorry, quite a lot about\nthe properties of words.", "start": 200.262, "duration": 3.398}, {"text": "And then the second\nnote is well,", "start": 203.66, "duration": 3.33}, {"text": "with this model we\nwanted to give reasonably", "start": 206.99, "duration": 4.68}, {"text": "high probabilities\nto the words that", "start": 211.67, "duration": 2.37}, {"text": "do occur in the context\nof the center word,", "start": 214.04, "duration": 3.33}, {"text": "at least if they\ndo so at all often.", "start": 217.37, "duration": 2.31}, {"text": "But obviously lots of\ndifferent words can occur.", "start": 219.68, "duration": 3.37}, {"text": "So we're not talking about\nprobabilities like 0.3 and 0.5.", "start": 223.05, "duration": 3.8}, {"text": "We're more likely\ngoing to be talking", "start": 226.85, "duration": 1.71}, {"text": "about probabilities like\n0.01 and numbers like that.", "start": 228.56, "duration": 4.84}, {"text": "Well, how do we achieve that?", "start": 233.4, "duration": 2.02}, {"text": "And well, the way that the\nword2vec model achieves this--", "start": 235.42, "duration": 4.28}, {"text": "and this is the learning\nphase of the model--", "start": 239.7, "duration": 2.64}, {"text": "is to place words that\nare similar in meaning", "start": 242.34, "duration": 4.38}, {"text": "close to each other in this\nhigh dimensional vector space.", "start": 246.72, "duration": 4.39}, {"text": "So again, you can't\nread this one.", "start": 251.11, "duration": 2.04}, {"text": "But if we scroll\ninto this one we", "start": 253.15, "duration": 2.929}, {"text": "see lots of words that are\nsimilar in meaning grouped", "start": 256.079, "duration": 4.2}, {"text": "close together in the space.", "start": 260.279, "duration": 1.511}, {"text": "So here are days of the week\nlike Tuesday, Thursday, Sunday,", "start": 261.79, "duration": 3.2}, {"text": "and also Christmas over.", "start": 264.99, "duration": 4.23}, {"text": "What else do we have, we\nhave Samsung and Nokia,", "start": 269.22, "duration": 5.67}, {"text": "this is a diagram I made\nquite a few years ago.", "start": 274.89, "duration": 3.55}, {"text": "So that's when Nokia was\nstill an important maker", "start": 278.44, "duration": 3.02}, {"text": "of cell phones.", "start": 281.46, "duration": 1.14}, {"text": "We have various sort of fields\nlike mathematics and economics", "start": 282.6, "duration": 3.84}, {"text": "over here.", "start": 286.44, "duration": 0.9}, {"text": "So we group words that\nare similar in meaning.", "start": 287.34, "duration": 4.78}, {"text": "Actually one more note I wanted\nto make on this, I mean again,", "start": 292.12, "duration": 3.03}, {"text": "this is a two\ndimensional picture,", "start": 295.15, "duration": 2.19}, {"text": "which is all I can\nshow you on a slide.", "start": 297.34, "duration": 3.55}, {"text": "And it's done with the\nprincipal components projection", "start": 300.89, "duration": 3.38}, {"text": "that you also used\nin the assignment.", "start": 304.27, "duration": 3.65}, {"text": "Something important to\nremember but hard to remember", "start": 307.92, "duration": 3.72}, {"text": "is that high dimensional spaces\nhave very different properties", "start": 311.64, "duration": 4.59}, {"text": "to the two dimensional\nspaces that we can look at.", "start": 316.23, "duration": 2.77}, {"text": "And so in particular,\nword vector", "start": 319.0, "duration": 4.43}, {"text": "can be close to\nmany other things", "start": 323.43, "duration": 2.16}, {"text": "in a high dimensional\nspace but close to them", "start": 325.59, "duration": 3.0}, {"text": "on different dimensions.", "start": 328.59, "duration": 2.77}, {"text": "OK, so I've mentioned\ndoing learning.", "start": 331.36, "duration": 4.84}, {"text": "So the next question\nis, well how", "start": 336.2, "duration": 3.02}, {"text": "do we learn good word vectors?", "start": 339.22, "duration": 3.45}, {"text": "And this was the bit that\nI didn't quite hook up", "start": 342.67, "duration": 2.85}, {"text": "at the end of last class.", "start": 345.52, "duration": 2.53}, {"text": "So for a while in the last\nI said oh gee, calculus.", "start": 348.05, "duration": 3.92}, {"text": "And we have to work out the\ngradient of the loss function", "start": 351.97, "duration": 3.84}, {"text": "with respect to\nthe parameters that", "start": 355.81, "duration": 1.86}, {"text": "will allow us to make progress.", "start": 357.67, "duration": 2.13}, {"text": "But I didn't sort of\naltogether put that together.", "start": 359.8, "duration": 2.41}, {"text": "So what we're going\nto do is we start off", "start": 362.21, "duration": 4.13}, {"text": "with random word vectors.", "start": 366.34, "duration": 2.4}, {"text": "We initialize them\nto small numbers,", "start": 368.74, "duration": 1.89}, {"text": "near 0 in each dimension.", "start": 370.63, "duration": 2.47}, {"text": "We've defined our\nloss function J,", "start": 373.1, "duration": 3.53}, {"text": "which we looked at last time.", "start": 376.63, "duration": 2.05}, {"text": "And then we're going to\nuse a gradient descent", "start": 378.68, "duration": 2.42}, {"text": "algorithm, which is an\niterative algorithm that", "start": 381.1, "duration": 3.93}, {"text": "learns to maximize J of\ntheta by changing theta.", "start": 385.03, "duration": 4.05}, {"text": "And so the idea\nof this algorithm", "start": 389.08, "duration": 2.37}, {"text": "is that from the\ncurrent values of theta", "start": 391.45, "duration": 3.93}, {"text": "you calculate the\ngradient j of theta.", "start": 395.38, "duration": 2.94}, {"text": "And then what you're going\nto do is make a small step", "start": 398.32, "duration": 3.57}, {"text": "in the direction of\nthe negative gradient.", "start": 401.89, "duration": 2.23}, {"text": "So the gradient is\npointing upwards.", "start": 404.12, "duration": 2.61}, {"text": "And we're taking a small\nstep in the direction", "start": 406.73, "duration": 2.69}, {"text": "of the negative of the\ngradient to gradually move down", "start": 409.42, "duration": 3.84}, {"text": "towards the minimum.", "start": 413.26, "duration": 1.81}, {"text": "And so one of the\nparameters of neural nets", "start": 415.07, "duration": 2.75}, {"text": "that you can fiddle in\nyour software package", "start": 417.82, "duration": 2.73}, {"text": "is what is the step size.", "start": 420.55, "duration": 2.32}, {"text": "So if you take a really,\nreally itsy bitsy step,", "start": 422.87, "duration": 2.84}, {"text": "it might take you a long time\nto minimize the function.", "start": 425.71, "duration": 3.91}, {"text": "You do a lot of\nwasted computation.", "start": 429.62, "duration": 3.39}, {"text": "On the other hand, if your\nstep size is much too big, well", "start": 433.01, "duration": 5.6}, {"text": "then you can actually\ndiverge and start", "start": 438.61, "duration": 2.88}, {"text": "going to worse places.", "start": 441.49, "duration": 1.71}, {"text": "Or even if you are going\ndownhill a little bit,", "start": 443.2, "duration": 2.9}, {"text": "then what's going to\nhappen is you're then", "start": 446.1, "duration": 1.75}, {"text": "going to end up\nbouncing back and forth.", "start": 447.85, "duration": 1.98}, {"text": "And it'll take you much\nlonger to get to the minimum.", "start": 449.83, "duration": 3.57}, {"text": "OK, in this picture I\nhave a beautiful quadratic", "start": 453.4, "duration": 5.01}, {"text": "and it's easy to minimize it.", "start": 458.41, "duration": 2.16}, {"text": "Something that you might\nknow about neural networks", "start": 460.57, "duration": 2.64}, {"text": "is that in general\nthey're not convex.", "start": 463.21, "duration": 2.4}, {"text": "So you could think that this\nis just all going to go awry.", "start": 465.61, "duration": 4.17}, {"text": "But the truth is in practice\nlife works out to be OK.", "start": 469.78, "duration": 3.06}, {"text": "But I think I won't get\ninto that more right", "start": 472.84, "duration": 2.22}, {"text": "now and come back to\nthat in the later class.", "start": 475.06, "duration": 4.24}, {"text": "So this is our gradient descent.", "start": 479.3, "duration": 2.04}, {"text": "So we have the current values\nof the parameters theta.", "start": 481.34, "duration": 3.26}, {"text": "We then walk a little bit\nin the negative direction", "start": 484.6, "duration": 5.25}, {"text": "of the gradient using\nour learning rate or step", "start": 489.85, "duration": 3.3}, {"text": "size alpha.", "start": 493.15, "duration": 1.05}, {"text": "And that gives us\nnew parameter values", "start": 494.2, "duration": 3.03}, {"text": "where that means that\nthese are vectors", "start": 497.23, "duration": 2.445}, {"text": "but for each\nindividual parameter", "start": 499.675, "duration": 2.475}, {"text": "we're updating it a\nlittle bit by working out", "start": 502.15, "duration": 3.51}, {"text": "the partial derivative of j\nwith respect to that parameter.", "start": 505.66, "duration": 6.509}, {"text": "So that's the simple\ngradient descent algorithm.", "start": 512.169, "duration": 2.961}, {"text": "Nobody uses it and\nyou shouldn't use it.", "start": 515.13, "duration": 4.09}, {"text": "The problem is that\nour j is a function", "start": 519.22, "duration": 3.5}, {"text": "of all windows in the corpus.", "start": 522.72, "duration": 2.46}, {"text": "Remember we're doing this\nsum over every center", "start": 525.18, "duration": 4.2}, {"text": "word in the entire corpus.", "start": 529.38, "duration": 2.22}, {"text": "And we'll often have billions\nof words in the corpus.", "start": 531.6, "duration": 2.95}, {"text": "So actually working\nout J of theta", "start": 534.55, "duration": 3.11}, {"text": "or the gradient of J of theta\nwould be extremely, extremely", "start": 537.66, "duration": 3.63}, {"text": "expensive.", "start": 541.29, "duration": 0.66}, {"text": "Because we have to iterate\nover our entire corpus.", "start": 541.95, "duration": 2.55}, {"text": "So you'd wait a very\nlong time before you", "start": 544.5, "duration": 2.46}, {"text": "made a single gradient update.", "start": 546.96, "duration": 1.89}, {"text": "And so optimization\nwould be extremely slow.", "start": 548.85, "duration": 2.94}, {"text": "And so basically 100% of the\ntime in neural network land", "start": 551.79, "duration": 5.22}, {"text": "we don't use gradient descent.", "start": 557.01, "duration": 2.13}, {"text": "We instead use what's called\nstochastic gradient descent.", "start": 559.14, "duration": 3.21}, {"text": "And stochastic gradient descent\nis a very simple modification", "start": 562.35, "duration": 4.14}, {"text": "of this.", "start": 566.49, "duration": 0.85}, {"text": "So rather than working out\nan estimate of the gradient", "start": 567.34, "duration": 4.52}, {"text": "based on the entire\ncorpus, you simply", "start": 571.86, "duration": 3.27}, {"text": "take one center word or a small\nbatch like 32 center words", "start": 575.13, "duration": 5.22}, {"text": "and you work out an estimate\nof the gradient based on them.", "start": 580.35, "duration": 4.26}, {"text": "Now that estimate\nof the gradient", "start": 584.61, "duration": 1.71}, {"text": "will be noisy and bad\nbecause you've only", "start": 586.32, "duration": 3.87}, {"text": "looked at a small fraction\nof the corpus rather", "start": 590.19, "duration": 2.52}, {"text": "than the whole corpus.", "start": 592.71, "duration": 1.27}, {"text": "But nevertheless, you can use\nthat estimate of the gradient", "start": 593.98, "duration": 3.62}, {"text": "to update your theta parameters\nin exactly the same way.", "start": 597.6, "duration": 4.15}, {"text": "And so this is the\nalgorithm that we can do.", "start": 601.75, "duration": 2.7}, {"text": "And so then if we have\na billion word corpus", "start": 604.45, "duration": 4.1}, {"text": "we can if we do it\non each center word.", "start": 608.55, "duration": 3.63}, {"text": "We can make a billion\nupdates to the parameters", "start": 612.18, "duration": 2.54}, {"text": "we pass through the corpus\nonce rather than only making", "start": 614.72, "duration": 3.55}, {"text": "one more accurate\nupdate to the parameters", "start": 618.27, "duration": 5.17}, {"text": "once you've been\nthrough the corpus.", "start": 623.44, "duration": 1.74}, {"text": "So overall, we can learn\nseveral orders of magnitude", "start": 625.18, "duration": 4.67}, {"text": "more quickly.", "start": 629.85, "duration": 1.09}, {"text": "And so this is the\nalgorithm that you'll", "start": 630.94, "duration": 2.0}, {"text": "be using everywhere, including\nright from the beginning,", "start": 632.94, "duration": 5.46}, {"text": "from our assignments.", "start": 638.4, "duration": 1.32}, {"text": "Again, just an extra\ncomment of more complicated", "start": 642.71, "duration": 3.12}, {"text": "stuff we'll come back to.", "start": 645.83, "duration": 3.308}, {"text": "[AUDIO OUT] the gradient descent\nis a sort of performance hack", "start": 649.138, "duration": 7.207}, {"text": "that lets you learn\nmuch more quickly.", "start": 656.345, "duration": 1.965}, {"text": "It turns out it's not\nonly a performance hack.", "start": 658.31, "duration": 2.94}, {"text": "Neural nets have some quite\ncounter intuitive properties.", "start": 661.25, "duration": 4.29}, {"text": "And actually the fact that\nstochastic gradient descent", "start": 665.54, "duration": 4.11}, {"text": "is kind of noisy and bounces\naround as it does its thing.", "start": 669.65, "duration": 3.93}, {"text": "It actually means that\nin complex networks", "start": 673.58, "duration": 3.18}, {"text": "it learns better\nsolutions than if you", "start": 676.76, "duration": 3.87}, {"text": "were to run plain gradient\ndescent very slowly.", "start": 680.63, "duration": 3.72}, {"text": "So you can both compute\nmuch more quickly", "start": 684.35, "duration": 2.49}, {"text": "and do a better job.", "start": 686.84, "duration": 1.125}, {"text": "OK, one final note on running\nstochastic gradients with word", "start": 690.71, "duration": 3.36}, {"text": "vectors, this is an aside.", "start": 694.07, "duration": 2.88}, {"text": "But something to\nnote is that if we're", "start": 696.95, "duration": 2.19}, {"text": "doing a stochastic gradient\nupdate based on one window,", "start": 699.14, "duration": 4.8}, {"text": "then actually in\nthat window we'll", "start": 703.94, "duration": 2.46}, {"text": "have seen almost none\nof our parameters.", "start": 706.4, "duration": 2.43}, {"text": "Because if we have a window\nof something like five words", "start": 708.83, "duration": 3.6}, {"text": "to either side of\nthe center word,", "start": 712.43, "duration": 1.83}, {"text": "we've seen at most 11\ndistinct word types.", "start": 714.26, "duration": 4.08}, {"text": "So we will have gradient\ninformation for those 11 words", "start": 718.34, "duration": 4.35}, {"text": "but the other 100,000 odd\nwords in our vocabulary", "start": 722.69, "duration": 3.6}, {"text": "will have no gradient\nupdate information.", "start": 726.29, "duration": 3.07}, {"text": "So this will be a very,\nvery sparse gradient update.", "start": 729.36, "duration": 4.37}, {"text": "So if you're only\nthinking math, you", "start": 733.73, "duration": 3.75}, {"text": "can just have your\nentire gradient", "start": 737.48, "duration": 4.02}, {"text": "and use the equation\nthat I showed before.", "start": 741.5, "duration": 3.33}, {"text": "But if you're thinking\nsystems optimization,", "start": 744.83, "duration": 4.05}, {"text": "then you'd want to\nthink, well actually I", "start": 748.88, "duration": 2.76}, {"text": "only want to update the\nparameters for a few words.", "start": 751.64, "duration": 5.04}, {"text": "And there have to be and there\nare much more efficient ways", "start": 756.68, "duration": 3.84}, {"text": "that I could do that.", "start": 760.52, "duration": 2.95}, {"text": "And so this is\nanother aside but it", "start": 763.47, "duration": 4.04}, {"text": "will be useful for your\nassignment so I will say it.", "start": 767.51, "duration": 3.12}, {"text": "Up until now when I\npresented word vectors,", "start": 770.63, "duration": 3.63}, {"text": "I presented them\nas column vectors.", "start": 774.26, "duration": 3.33}, {"text": "And that makes the most\nsense if you think about it", "start": 777.59, "duration": 3.48}, {"text": "as a piece of math.", "start": 781.07, "duration": 2.43}, {"text": "Whereas actually in all\ncommon deep learning", "start": 783.5, "duration": 4.89}, {"text": "packages including\nPyTorch that we're using,", "start": 788.39, "duration": 3.21}, {"text": "word vectors are actually\nrepresented as row vectors.", "start": 791.6, "duration": 4.36}, {"text": "And if you remember back to\nthe representation of matrices", "start": 795.96, "duration": 4.04}, {"text": "in CS107 or something\nlike that, that you'll", "start": 800.0, "duration": 3.09}, {"text": "know that that's then obviously\nefficient for representing", "start": 803.09, "duration": 5.19}, {"text": "words.", "start": 808.28, "duration": 0.54}, {"text": "Because then you can access\nan entire word vector", "start": 808.82, "duration": 2.91}, {"text": "as a continuous range of memory,\ndifferent if you're in Fortran.", "start": 811.73, "duration": 4.68}, {"text": "Anyway, so actually\nour word vectors", "start": 816.41, "duration": 3.15}, {"text": "will be row vectors when you\nlook at those inside PyTorch.", "start": 819.56, "duration": 7.29}, {"text": "OK, now I wanted\nto say a bit more", "start": 826.85, "duration": 2.94}, {"text": "about the word2vec\nalgorithm family.", "start": 829.79, "duration": 3.63}, {"text": "And also what you're\ngoing to do in homework 2.", "start": 833.42, "duration": 5.25}, {"text": "So if you're still meant to be\nworking on homework 1, which", "start": 838.67, "duration": 2.64}, {"text": "remember is due\nnext Tuesday, that", "start": 841.31, "duration": 2.79}, {"text": "really actually\nwith today's content", "start": 844.1, "duration": 2.52}, {"text": "we're starting into homework 2.", "start": 846.62, "duration": 2.04}, {"text": "And I'll kind of go through the\nfirst part of homework 2 today", "start": 848.66, "duration": 3.33}, {"text": "and the other stuff you\nneed to know for homework 2.", "start": 851.99, "duration": 3.75}, {"text": "So I mentioned briefly\nthe idea that we", "start": 855.74, "duration": 2.1}, {"text": "have two separate vectors\nfor each word type.", "start": 857.84, "duration": 3.66}, {"text": "The center vector and\nthe outside vectors.", "start": 861.5, "duration": 3.48}, {"text": "And we just average\nthem both at the end.", "start": 864.98, "duration": 2.07}, {"text": "They're similar but not\nidentical for multiple reasons,", "start": 867.05, "duration": 3.34}, {"text": "including the random\ninitialization", "start": 870.39, "duration": 2.18}, {"text": "and the stochastic\ngradient descent.", "start": 872.57, "duration": 3.3}, {"text": "You can implement a\nword2vec algorithm", "start": 875.87, "duration": 3.99}, {"text": "with just one vector per word.", "start": 879.86, "duration": 2.43}, {"text": "And actually, if you do\nit works slightly better.", "start": 882.29, "duration": 3.66}, {"text": "But it makes the algorithm\nmuch more complicated.", "start": 885.95, "duration": 3.43}, {"text": "And the reason for\nthat is sometimes you", "start": 889.38, "duration": 3.47}, {"text": "will have the same word type as\nthe center word and the context", "start": 892.85, "duration": 4.92}, {"text": "word.", "start": 897.77, "duration": 0.82}, {"text": "And that means that when\nyou're doing your calculus", "start": 898.59, "duration": 3.59}, {"text": "at that point, you've then\ngot this sort of messy case", "start": 902.18, "duration": 3.42}, {"text": "that just for that word\nyou're getting a dot product--", "start": 905.6, "duration": 5.445}, {"text": "you're getting a\ndot product of x", "start": 911.045, "duration": 1.375}, {"text": "dot x term, which makes it sort\nof much messier to work out.", "start": 912.42, "duration": 3.78}, {"text": "And so that's why we use\nthis simple optimization", "start": 916.2, "duration": 2.9}, {"text": "of having two vectors per word.", "start": 919.1, "duration": 2.32}, {"text": "OK, so for the word2vec model as\nintroduced in the Mikolov et al", "start": 921.42, "duration": 7.91}, {"text": "paper in 2013, it wasn't\nreally just one algorithm.", "start": 929.33, "duration": 6.72}, {"text": "It was a family of algorithms.", "start": 936.05, "duration": 2.32}, {"text": "So there were two\nbasic model variants.", "start": 938.37, "duration": 3.38}, {"text": "One was called the\nskip-gram model,", "start": 941.75, "duration": 2.26}, {"text": "which is the one that\nI've explained to you.", "start": 944.01, "duration": 2.3}, {"text": "That [AUDIO OUT] outside\nwords position independent", "start": 946.31, "duration": 6.91}, {"text": "given the center word in a\nbag of words style model.", "start": 953.22, "duration": 4.15}, {"text": "The other one was called the\nContinuous Bag of Words model,", "start": 957.37, "duration": 2.93}, {"text": "CBOW.", "start": 960.3, "duration": 0.84}, {"text": "And in this one you\npredict the center word", "start": 961.14, "duration": 2.82}, {"text": "from a bag of context words.", "start": 963.96, "duration": 3.52}, {"text": "Both of these give\nsimilar results.", "start": 967.48, "duration": 2.18}, {"text": "The skip-gram one is more\nnatural in various ways.", "start": 969.66, "duration": 3.67}, {"text": "So it's sort of normally the\none that people have gravitated", "start": 973.33, "duration": 3.8}, {"text": "to in subsequent work.", "start": 977.13, "duration": 2.34}, {"text": "But then as to how\nyou train this model.", "start": 979.47, "duration": 3.75}, {"text": "What I've presented so far is\nthe naive softmax equation,", "start": 983.22, "duration": 5.02}, {"text": "which is a simple but relatively\nexpensive training method.", "start": 988.24, "duration": 5.36}, {"text": "And so that isn't\nreally what they", "start": 993.6, "duration": 2.67}, {"text": "suggest using in the paper.", "start": 996.27, "duration": 2.73}, {"text": "They suggest using\na method that's", "start": 999.0, "duration": 1.53}, {"text": "called negative sampling.", "start": 1000.53, "duration": 1.53}, {"text": "So an acronym\nyou'll see sometimes", "start": 1002.06, "duration": 2.16}, {"text": "is SGNS, which means\nskip-grams negative sampling.", "start": 1004.22, "duration": 4.83}, {"text": "So let me just say a little\nbit about what this is.", "start": 1009.05, "duration": 4.65}, {"text": "But actually, doing\nthe skip-gram model", "start": 1013.7, "duration": 3.12}, {"text": "with negative sampling is\nthe part of homework 2.", "start": 1016.82, "duration": 2.73}, {"text": "So you'll get to\nknow this model well.", "start": 1019.55, "duration": 2.04}, {"text": "So the point is that if\nyou use this naive softmax", "start": 1021.59, "duration": 4.29}, {"text": "even though people commonly\ndo use this naive softmax", "start": 1025.88, "duration": 3.42}, {"text": "in various neural net models.", "start": 1029.3, "duration": 1.95}, {"text": "That working out the\ndenominator is pretty expensive.", "start": 1031.25, "duration": 4.02}, {"text": "And that's because you\nhave to iterate over", "start": 1035.27, "duration": 2.7}, {"text": "every word in the vocabulary\nand work out these dot products.", "start": 1037.97, "duration": 4.99}, {"text": "So if you have a\n100,000 word vocabulary,", "start": 1042.96, "duration": 4.29}, {"text": "you have to do\n100,000 dot products", "start": 1047.25, "duration": 2.63}, {"text": "to work out the denominator.", "start": 1049.88, "duration": 2.19}, {"text": "And that seems a\nlittle bit of a shame.", "start": 1052.07, "duration": 2.61}, {"text": "And so instead of that, the\nidea of negative sampling", "start": 1054.68, "duration": 3.84}, {"text": "is instead of using\nthis softmax we're", "start": 1058.52, "duration": 4.56}, {"text": "going to train binary logistic\nregression models for both the", "start": 1063.08, "duration": 7.92}, {"text": "the true pair of center word and\nthe context word versus noise", "start": 1071.0, "duration": 7.71}, {"text": "pairs where we keep the\ntrue center word and we just", "start": 1078.71, "duration": 3.78}, {"text": "randomly sample words\nfrom the vocabulary.", "start": 1082.49, "duration": 4.24}, {"text": "So as presented in the\npaper, the idea is like this.", "start": 1086.73, "duration": 4.11}, {"text": "So overall what we\nwant to optimize", "start": 1090.84, "duration": 2.93}, {"text": "is still an average of the\nloss for each particular center", "start": 1093.77, "duration": 6.45}, {"text": "word.", "start": 1100.22, "duration": 0.87}, {"text": "But for when we're\nworking out the loss", "start": 1101.09, "duration": 2.22}, {"text": "for each particular center\nword, we're going to work out--", "start": 1103.31, "duration": 4.55}, {"text": "sorry, the loss for\neach particular center", "start": 1107.86, "duration": 1.75}, {"text": "word in each particular\nwindow, we're", "start": 1109.61, "duration": 2.16}, {"text": "going to take the dot product\nas before of the center", "start": 1111.77, "duration": 4.2}, {"text": "word and the outside word.", "start": 1115.97, "duration": 3.72}, {"text": "And that's sort of\nthe main quantity.", "start": 1119.69, "duration": 2.31}, {"text": "But now instead of using\nthat inside the softmax,", "start": 1122.0, "duration": 3.24}, {"text": "we're going to put it through\nthe logistic function, which", "start": 1125.24, "duration": 3.48}, {"text": "is sometimes often also\ncalled the sigmoid function,", "start": 1128.72, "duration": 3.49}, {"text": "the name logistic\nis more precise", "start": 1132.21, "duration": 1.76}, {"text": "so that's this function here.", "start": 1133.97, "duration": 1.63}, {"text": "So the logistic function\nis a handy function", "start": 1135.6, "duration": 2.81}, {"text": "that will map any real number\nto a probability between 0 and 1", "start": 1138.41, "duration": 5.55}, {"text": "open interval.", "start": 1143.96, "duration": 1.27}, {"text": "So basically if the\ndot product is large,", "start": 1145.23, "duration": 4.02}, {"text": "the logistic of the dot\nproduct will be virtually 1.", "start": 1149.25, "duration": 3.89}, {"text": "OK, so we want this to be large.", "start": 1153.14, "duration": 3.3}, {"text": "And then what we'd\nlike is on average we'd", "start": 1156.44, "duration": 3.3}, {"text": "like the dot product between\nthe center word and words", "start": 1159.74, "duration": 3.81}, {"text": "that we just chose\nrandomly, i.e.", "start": 1163.55, "duration": 2.64}, {"text": "they most likely didn't\nactually occur in the context", "start": 1166.19, "duration": 3.54}, {"text": "of the center word to be small.", "start": 1169.73, "duration": 3.06}, {"text": "And there's just\none little trick", "start": 1172.79, "duration": 3.09}, {"text": "of how this is done, which\nis this sigmoid function is", "start": 1175.88, "duration": 4.47}, {"text": "symmetric and so if we want\nthis probability to be small,", "start": 1180.35, "duration": 8.31}, {"text": "we can take the negative\nof the dot product.", "start": 1188.66, "duration": 2.61}, {"text": "So we're wanting\nit to be over here.", "start": 1191.27, "duration": 2.79}, {"text": "The dot product of a random\nword and the center word", "start": 1194.06, "duration": 4.56}, {"text": "is a negative number.", "start": 1198.62, "duration": 2.23}, {"text": "And so then we're going to\ntake the negation of that", "start": 1200.85, "duration": 3.41}, {"text": "and then again once we put\nthat through the sigmoid,", "start": 1204.26, "duration": 2.73}, {"text": "we'd like a big number.", "start": 1206.99, "duration": 1.77}, {"text": "OK, so the way they're\npresenting things,", "start": 1208.76, "duration": 2.85}, {"text": "they're actually\nmaximizing this quantity.", "start": 1211.61, "duration": 2.67}, {"text": "But if I go back to making it\na bit more similar to the way", "start": 1214.28, "duration": 3.78}, {"text": "we had written\nthings, we'd worked", "start": 1218.06, "duration": 3.03}, {"text": "with minimizing the\nnegative log likelihood.", "start": 1221.09, "duration": 4.47}, {"text": "So it looks like this.", "start": 1225.56, "duration": 2.86}, {"text": "So we're taking the negative\nlog likelihood of the sigmoid", "start": 1228.42, "duration": 5.48}, {"text": "of the dot product.", "start": 1233.9, "duration": 1.71}, {"text": "Again, negative log\nlikelihood, we're", "start": 1235.61, "duration": 2.43}, {"text": "using the same negated dot\nproduct through the sigmoid.", "start": 1238.04, "duration": 4.65}, {"text": "And then we're going to\nwork out this quantity", "start": 1242.69, "duration": 3.12}, {"text": "for a handful of random words.", "start": 1245.81, "duration": 4.71}, {"text": "We k-negative samples and\nhow likely they are to sample", "start": 1250.52, "duration": 4.45}, {"text": "a word depends on\ntheir probability.", "start": 1254.97, "duration": 2.45}, {"text": "And where this loss\nfunction is going", "start": 1257.42, "duration": 2.7}, {"text": "to be minimized given this\nnegation by making these dot", "start": 1260.12, "duration": 5.05}, {"text": "products large, and these dot\nproducts small means negative.", "start": 1265.17, "duration": 5.84}, {"text": "So there's just then one\nother trick that they use.", "start": 1274.16, "duration": 5.57}, {"text": "Actually there's more\nthan one other trick", "start": 1279.73, "duration": 1.92}, {"text": "that's used in\nthe word2vec paper", "start": 1281.65, "duration": 1.62}, {"text": "to get it to perform well.", "start": 1283.27, "duration": 1.53}, {"text": "But I'll only mention one\nof their other tricks here.", "start": 1284.8, "duration": 3.3}, {"text": "When they sample the\nwords, they don't simply", "start": 1288.1, "duration": 3.48}, {"text": "just sample the words based on\ntheir probability of occurrence", "start": 1291.58, "duration": 5.55}, {"text": "in the corpus or uniformly.", "start": 1297.13, "duration": 2.43}, {"text": "What they do is they start\nwith what we call the unigram", "start": 1299.56, "duration": 2.73}, {"text": "distribution of words.", "start": 1302.29, "duration": 1.68}, {"text": "So that is how\noften words actually", "start": 1303.97, "duration": 3.69}, {"text": "occur in our big corpus.", "start": 1307.66, "duration": 1.83}, {"text": "So if you have a\nbillion word corpus", "start": 1309.49, "duration": 2.31}, {"text": "and a particular word\noccurred 90 times in it,", "start": 1311.8, "duration": 3.81}, {"text": "you're taking 90\ndivided by a billion.", "start": 1315.61, "duration": 2.43}, {"text": "And so that's the unigram\nprobability of the word.", "start": 1318.04, "duration": 3.12}, {"text": "But what they then do\nis that they take that", "start": 1321.16, "duration": 2.98}, {"text": "to the three-quarters power.", "start": 1324.14, "duration": 2.0}, {"text": "And the effect of that\nthree-quarters power,", "start": 1326.14, "duration": 2.25}, {"text": "which is then renormalized\nto make a probability", "start": 1328.39, "duration": 2.31}, {"text": "distribution with z like we saw\nthe last time with the softmax.", "start": 1330.7, "duration": 4.47}, {"text": "By taking the\nthree-quarters power,", "start": 1335.17, "duration": 3.09}, {"text": "that has the effect of\ndampening the difference", "start": 1338.26, "duration": 3.18}, {"text": "between common and rare words.", "start": 1341.44, "duration": 2.25}, {"text": "So that less frequent words are\nsampled somewhat more often,", "start": 1343.69, "duration": 4.42}, {"text": "but still not nearly as much\nas they would be if you just", "start": 1348.11, "duration": 4.07}, {"text": "use something like a\nuniform distribution", "start": 1352.18, "duration": 2.1}, {"text": "over the vocabulary.", "start": 1354.28, "duration": 2.37}, {"text": "OK, so that's\nbasically everything", "start": 1356.65, "duration": 5.16}, {"text": "to say about the basics\nof how we have this very", "start": 1361.81, "duration": 5.79}, {"text": "simple neural network\nalgorithm word2vec", "start": 1367.6, "duration": 4.59}, {"text": "and how we can train it\nand learn word vectors.", "start": 1372.19, "duration": 4.43}, {"text": "So for the next bit what I\nwant to do is step back a bit", "start": 1376.62, "duration": 3.94}, {"text": "and say, well,\nhere's an algorithm", "start": 1380.56, "duration": 1.65}, {"text": "that I've shown you\nthat works great.", "start": 1382.21, "duration": 3.69}, {"text": "What else could we have done.", "start": 1385.9, "duration": 2.13}, {"text": "And what can we say about that.", "start": 1388.03, "duration": 2.62}, {"text": "And the first thing that\nyou might think about", "start": 1390.65, "duration": 2.96}, {"text": "is, well here's this\nfunny iterative algorithm", "start": 1393.61, "duration": 4.71}, {"text": "to give you word vectors.", "start": 1398.32, "duration": 4.08}, {"text": "If we have a lot of\nwords in a corpus,", "start": 1402.4, "duration": 4.32}, {"text": "seems like a more obvious\nthing that we could do", "start": 1406.72, "duration": 2.76}, {"text": "is just look at the counts of\nhow words occur with each other", "start": 1409.48, "duration": 5.82}, {"text": "and build a matrix of counts,\na co-occurrence matrix.", "start": 1415.3, "duration": 5.53}, {"text": "So here's the idea of\na co-occurrence matrix.", "start": 1420.83, "duration": 3.35}, {"text": "So I've got a teeny\nlittle corpus.", "start": 1424.18, "duration": 2.04}, {"text": "I like deep learning.", "start": 1426.22, "duration": 1.23}, {"text": "I like NLP, I enjoy flying.", "start": 1427.45, "duration": 3.21}, {"text": "And I can define a window size.", "start": 1430.66, "duration": 2.23}, {"text": "I made my window\nsimply size one to make", "start": 1432.89, "duration": 3.29}, {"text": "it easy to fill in\nmy matrix symmetric", "start": 1436.18, "duration": 4.02}, {"text": "just like our\nword2vec algorithm.", "start": 1440.2, "duration": 2.65}, {"text": "And so then the\ncounts in these cells", "start": 1442.85, "duration": 4.85}, {"text": "are simply how often\nthings co-occur", "start": 1447.7, "duration": 2.97}, {"text": "in the window of size 1.", "start": 1450.67, "duration": 1.96}, {"text": "So \"I like\" occurs twice.", "start": 1452.63, "duration": 3.38}, {"text": "So we get twos in these\ncells because it's symmetric.", "start": 1456.01, "duration": 3.75}, {"text": "\"Deep learning\" occurs\nonce so we get 1 here.", "start": 1459.76, "duration": 4.11}, {"text": "And lots of other\nthings occur 0.", "start": 1463.87, "duration": 2.19}, {"text": "So we can build up a\nco-occurrence matrix like this.", "start": 1466.06, "duration": 5.07}, {"text": "And well, these actually\ngive us a representation", "start": 1471.13, "duration": 3.72}, {"text": "of words as\nco-occurrence vectors.", "start": 1474.85, "duration": 3.66}, {"text": "So I can take the word \"I\" with\neither a row or a column vector", "start": 1478.51, "duration": 4.47}, {"text": "since it's symmetric and say OK,\nmy representation of the word", "start": 1482.98, "duration": 4.32}, {"text": "\"I\" is this row vector.", "start": 1487.3, "duration": 3.15}, {"text": "And that is a representation\nof the word \"I\".", "start": 1490.45, "duration": 3.3}, {"text": "And I think you can\nmaybe convince yourself", "start": 1493.75, "duration": 3.51}, {"text": "that to the extent that words\nhave similar meaning and usage,", "start": 1497.26, "duration": 4.92}, {"text": "you'd sort of expect them to\nhave somewhat similar vectors,", "start": 1502.18, "duration": 2.925}, {"text": "right?", "start": 1505.105, "duration": 0.795}, {"text": "So if I had the word \"you\"\nas well on a larger corpus,", "start": 1505.9, "duration": 3.36}, {"text": "you might expect \"I\" and\n\"you\" to have similar vectors.", "start": 1509.26, "duration": 3.09}, {"text": "Because I like, you\nlike, I enjoy, you enjoy.", "start": 1512.35, "duration": 3.36}, {"text": "You'd see the same\nkinds of possibilities.", "start": 1515.71, "duration": 3.27}, {"text": "Hey Chris?", "start": 1518.98, "duration": 0.97}, {"text": "Yeah?", "start": 1519.95, "duration": 0.5}, {"text": "Do you think you can\nanswer some questions?", "start": 1520.45, "duration": 1.792}, {"text": "Sure.", "start": 1522.242, "duration": 0.748}, {"text": "All right.", "start": 1522.99, "duration": 0.5}, {"text": "So we've got some questions from\nsort of the negative sampling", "start": 1523.49, "duration": 4.01}, {"text": "slides.", "start": 1527.5, "duration": 2.16}, {"text": "In particular can you\ngive some intuition", "start": 1529.66, "duration": 4.273}, {"text": "for negative sampling?", "start": 1533.933, "duration": 0.917}, {"text": "What is the negative\nsampling doing?", "start": 1534.85, "duration": 1.68}, {"text": "And why do we only take\none positive example?", "start": 1536.53, "duration": 3.64}, {"text": "These are two questions\nif you can answer.", "start": 1540.17, "duration": 2.75}, {"text": "OK.", "start": 1542.92, "duration": 0.72}, {"text": "That's a good question.", "start": 1543.64, "duration": 1.02}, {"text": "OK, I'll try and\ngive more intuition.", "start": 1544.66, "duration": 2.07}, {"text": "So one is to work out something\nlike what the softmax did", "start": 1546.73, "duration": 8.19}, {"text": "in a much more efficient way.", "start": 1554.92, "duration": 5.44}, {"text": "So in the softmax\nwell, you wanted", "start": 1560.36, "duration": 3.02}, {"text": "to give high probability\nin predicting", "start": 1563.38, "duration": 6.48}, {"text": "a context word that actually\ndid appear with the center word.", "start": 1569.86, "duration": 4.23}, {"text": "And well, the way you\ndo that is by having", "start": 1574.09, "duration": 3.42}, {"text": "the dot product\nbetween those two words", "start": 1577.51, "duration": 2.67}, {"text": "be as big as possible.", "start": 1580.18, "duration": 1.78}, {"text": "And part of how--", "start": 1581.96, "duration": 3.2}, {"text": "you're going to be sort of--", "start": 1585.16, "duration": 1.38}, {"text": "it's more than that\nbecause in the denominator", "start": 1586.54, "duration": 3.0}, {"text": "we were also working out the dot\nproduct with every other word", "start": 1589.54, "duration": 3.51}, {"text": "in the vocabulary.", "start": 1593.05, "duration": 1.36}, {"text": "So as well as wanting the dot\nproduct with the actual word", "start": 1594.41, "duration": 3.38}, {"text": "that you see in the\ncontext to be big.", "start": 1597.79, "duration": 2.7}, {"text": "You maximize your\nlikelihood by making", "start": 1600.49, "duration": 4.23}, {"text": "the dot products of other words\nthat weren't in the context", "start": 1604.72, "duration": 4.35}, {"text": "smaller.", "start": 1609.07, "duration": 1.08}, {"text": "Because that's shrinking your\ndenominator and therefore", "start": 1610.15, "duration": 4.14}, {"text": "you've got a bigger\nnumber coming out", "start": 1614.29, "duration": 2.61}, {"text": "and you're maximizing the loss.", "start": 1616.9, "duration": 1.9}, {"text": "So even for the softmax,\nthe general thing", "start": 1618.8, "duration": 2.3}, {"text": "that you want to do\nto maximize that is", "start": 1621.1, "duration": 2.64}, {"text": "have a dot product with words\nactually in the context big.", "start": 1623.74, "duration": 4.59}, {"text": "Dot products with words\nnot in the context", "start": 1628.33, "duration": 2.73}, {"text": "be small to the extent possible.", "start": 1631.06, "duration": 2.97}, {"text": "And obviously you\nhave to average", "start": 1634.03, "duration": 1.77}, {"text": "this as best you can over all\nkinds of different contexts.", "start": 1635.8, "duration": 2.525}, {"text": "Because sometimes\ndifferent words", "start": 1638.325, "duration": 1.375}, {"text": "appear in different\ncontexts obviously.", "start": 1639.7, "duration": 4.0}, {"text": "So the negative sampling is\na way of therefore trying", "start": 1643.7, "duration": 5.99}, {"text": "to maximize the same objective.", "start": 1649.69, "duration": 3.57}, {"text": "Now, you only have one positive\nterm because you're actually", "start": 1653.26, "duration": 6.99}, {"text": "wanting to use the actual data.", "start": 1660.25, "duration": 2.32}, {"text": "So you're not wanting\nto invent data.", "start": 1662.57, "duration": 2.64}, {"text": "So for working out\nthe entire J, we", "start": 1665.21, "duration": 2.63}, {"text": "do work this quantity\nout for every center", "start": 1667.84, "duration": 4.02}, {"text": "word and every context word.", "start": 1671.86, "duration": 2.44},
+  {
+    "text": "So we are iterating over the\ndifferent words in the context",
+    "start": 1674.3,
+    "duration": 3.95
+  },
+  {
+    "text": "window.",
+    "start": 1678.25,
+    "duration": 0.75
+  },
+  {
+    "text": "And then we're moving through\npositions in the corpus.",
+    "start": 1679.0,
+    "duration": 2.68
+  },
+  {
+    "text": "So we're doing different\nVCs, so gradually we do this.",
+    "start": 1681.68,
+    "duration": 3.74
+  },
+  {
+    "text": "But for one particular center\nword and one particular context",
+    "start": 1685.42,
+    "duration": 3.45
+  },
+  {
+    "text": "word, we only have one real\npiece of data that's positive.",
+    "start": 1688.87,
+    "duration": 3.84
+  },
+  {
+    "text": "So that's all we\nuse because we don't",
+    "start": 1692.71,
+    "duration": 2.07
+  },
+  {
+    "text": "know what other words should\nbe counted as positive words.",
+    "start": 1694.78,
+    "duration": 5.22
+  },
+  {
+    "text": "Now for the negative\nwords you could just",
+    "start": 1700.0,
+    "duration": 3.66
+  },
+  {
+    "text": "sample one negative word and\nthat would probably work.",
+    "start": 1703.66,
+    "duration": 5.68
+  },
+  {
+    "text": "But if you want a sort of a\nslightly better more stable",
+    "start": 1709.34,
+    "duration": 3.59
+  },
+  {
+    "text": "sense of, OK we'd like to\nin general have other words,",
+    "start": 1712.93,
+    "duration": 5.28
+  },
+  {
+    "text": "have low probability.",
+    "start": 1718.21,
+    "duration": 1.433
+  },
+  {
+    "text": "That seems like you might\nbe able to get better more",
+    "start": 1719.643,
+    "duration": 2.167
+  },
+  {
+    "text": "stable results if you instead\nsay let's have 10 or 15 sample",
+    "start": 1721.81,
+    "duration": 5.58
+  },
+  {
+    "text": "negative words.",
+    "start": 1727.39,
+    "duration": 0.96
+  },
+  {
+    "text": "And indeed that's\nbeen found to be true.",
+    "start": 1728.35,
+    "duration": 3.63
+  },
+  {
+    "text": "And for the negative\nwords, well, it's",
+    "start": 1731.98,
+    "duration": 2.07
+  },
+  {
+    "text": "easy to sample any number\nof random words you want.",
+    "start": 1734.05,
+    "duration": 3.01
+  },
+  {
+    "text": "And at that point it's kind\nof a probabilistic argument.",
+    "start": 1737.06,
+    "duration": 2.87
+  },
+  {
+    "text": "The words that you're sampling\nmight not be actually bad words",
+    "start": 1739.93,
+    "duration": 4.38
+  },
+  {
+    "text": "to appear in the context.",
+    "start": 1744.31,
+    "duration": 2.07
+  },
+  {
+    "text": "They might actually be other\nwords that are in the context.",
+    "start": 1746.38,
+    "duration": 2.67
+  },
+  {
+    "text": "But 99.9% of the\ntime they will be",
+    "start": 1749.05,
+    "duration": 3.27
+  },
+  {
+    "text": "unlikely words to\noccur in the context.",
+    "start": 1752.32,
+    "duration": 3.06
+  },
+  {
+    "text": "And so they're good ones to use.",
+    "start": 1755.38,
+    "duration": 2.1
+  },
+  {
+    "text": "And yes you only sample\n10 or 15 of them.",
+    "start": 1757.48,
+    "duration": 3.94
+  },
+  {
+    "text": "But that's enough\nto make progress.",
+    "start": 1761.42,
+    "duration": 2.45
+  },
+  {
+    "text": "Because the center word is going\nto turn up on other occasions.",
+    "start": 1763.87,
+    "duration": 4.83
+  },
+  {
+    "text": "And when it does, you'll\nsample different words over",
+    "start": 1768.7,
+    "duration": 2.49
+  },
+  {
+    "text": "here so that you\ngradually sample",
+    "start": 1771.19,
+    "duration": 2.1
+  },
+  {
+    "text": "different parts of the\nspace and start to learn.",
+    "start": 1773.29,
+    "duration": 2.85
+  },
+  {
+    "text": "We had this co-occurrence\nmatrix and it",
+    "start": 1776.14,
+    "duration": 3.72
+  },
+  {
+    "text": "gives a representation of\nwords as co-occurrence vectors.",
+    "start": 1779.86,
+    "duration": 6.54
+  },
+  {
+    "text": "And just one more\nnote on that, I",
+    "start": 1786.4,
+    "duration": 2.97
+  },
+  {
+    "text": "mean there are actually two ways\nthat people have commonly made",
+    "start": 1789.37,
+    "duration": 3.06
+  },
+  {
+    "text": "these co-occurrence matrices.",
+    "start": 1792.43,
+    "duration": 2.01
+  },
+  {
+    "text": "One corresponds to what\nwe've seen already,",
+    "start": 1794.44,
+    "duration": 2.55
+  },
+  {
+    "text": "that you use a window\naround the word, which",
+    "start": 1796.99,
+    "duration": 3.27
+  },
+  {
+    "text": "is similar to word2vec.",
+    "start": 1800.26,
+    "duration": 2.31
+  },
+  {
+    "text": "And that allows you to\ncapture some locality",
+    "start": 1802.57,
+    "duration": 2.61
+  },
+  {
+    "text": "and some of the sort of\nsyntactic and semantic",
+    "start": 1805.18,
+    "duration": 2.52
+  },
+  {
+    "text": "proximity that's\nmore fine grained.",
+    "start": 1807.7,
+    "duration": 2.91
+  },
+  {
+    "text": "The other way these co-occurence\nmatrices have been made",
+    "start": 1810.61,
+    "duration": 6.75
+  },
+  {
+    "text": "is that normally documents\nhave some structure,",
+    "start": 1817.36,
+    "duration": 2.71
+  },
+  {
+    "text": "whether it's paragraphs or\njust the actual web pages",
+    "start": 1820.07,
+    "duration": 3.68
+  },
+  {
+    "text": "sort of size documents.",
+    "start": 1823.75,
+    "duration": 1.2
+  },
+  {
+    "text": "So you can just make your\nwindow size a paragraph",
+    "start": 1824.95,
+    "duration": 3.63
+  },
+  {
+    "text": "or a whole web page and\ncount co-occurrence in those.",
+    "start": 1828.58,
+    "duration": 3.57
+  },
+  {
+    "text": "And this is the kind\nof method that's",
+    "start": 1832.15,
+    "duration": 1.8
+  },
+  {
+    "text": "often been used in\ninformation retrieval,",
+    "start": 1833.95,
+    "duration": 2.46
+  },
+  {
+    "text": "in methods like latent\nsemantic analysis.",
+    "start": 1836.41,
+    "duration": 4.34
+  },
+  {
+    "text": "OK, so the question then is\nare these kind of count word",
+    "start": 1840.75,
+    "duration": 5.97
+  },
+  {
+    "text": "vectors good things to use?",
+    "start": 1846.72,
+    "duration": 3.33
+  },
+  {
+    "text": "Well, people have used them.",
+    "start": 1850.05,
+    "duration": 3.4
+  },
+  {
+    "text": "They're not terrible.",
+    "start": 1853.45,
+    "duration": 1.5
+  },
+  {
+    "text": "But they have certain problems.",
+    "start": 1854.95,
+    "duration": 2.34
+  },
+  {
+    "text": "The kind of problems\nthat they have,",
+    "start": 1857.29,
+    "duration": 2.37
+  },
+  {
+    "text": "well, firstly they're\nhuge though very sparse.",
+    "start": 1859.66,
+    "duration": 3.85
+  },
+  {
+    "text": "So this is back\nwhere I said before,",
+    "start": 1863.51,
+    "duration": 1.62
+  },
+  {
+    "text": "if we had a vocabulary\nof half a million words",
+    "start": 1865.13,
+    "duration": 3.17
+  },
+  {
+    "text": "and then we have half a\nmillion dimensional vector",
+    "start": 1868.3,
+    "duration": 3.57
+  },
+  {
+    "text": "for each word, which\nis much, much bigger",
+    "start": 1871.87,
+    "duration": 3.51
+  },
+  {
+    "text": "than the word vectors\nthat we typically use.",
+    "start": 1875.38,
+    "duration": 4.47
+  },
+  {
+    "text": "And it also means\nthat because we",
+    "start": 1879.85,
+    "duration": 2.97
+  },
+  {
+    "text": "have these very high\ndimensional vectors",
+    "start": 1882.82,
+    "duration": 3.24
+  },
+  {
+    "text": "that we have a lot of sparsity\nand a lot of randomness.",
+    "start": 1886.06,
+    "duration": 4.51
+  },
+  {
+    "text": "So the results that you get tend\nto be noisier and less robust",
+    "start": 1890.57,
+    "duration": 4.31
+  },
+  {
+    "text": "depending on what particular\nstuff was in the corpus.",
+    "start": 1894.88,
+    "duration": 3.78
+  },
+  {
+    "text": "And so in general\npeople have found",
+    "start": 1898.66,
+    "duration": 2.7
+  },
+  {
+    "text": "that you can get much\nbetter results by working",
+    "start": 1901.36,
+    "duration": 2.97
+  },
+  {
+    "text": "with low dimensional vectors.",
+    "start": 1904.33,
+    "duration": 2.04
+  },
+  {
+    "text": "So then the idea is\nwe can store most",
+    "start": 1906.37,
+    "duration": 3.99
+  },
+  {
+    "text": "of the important information\nabout the distribution of words",
+    "start": 1910.36,
+    "duration": 3.63
+  },
+  {
+    "text": "and the context of other\nwords in a fixed small number",
+    "start": 1913.99,
+    "duration": 3.96
+  },
+  {
+    "text": "of dimensions, giving\na dense vector.",
+    "start": 1917.95,
+    "duration": 3.03
+  },
+  {
+    "text": "And in practice\nthe dimensionality",
+    "start": 1920.98,
+    "duration": 2.01
+  },
+  {
+    "text": "of the vectors that\nare used are normally",
+    "start": 1922.99,
+    "duration": 2.37
+  },
+  {
+    "text": "somewhere between 25 and 1,000.",
+    "start": 1925.36,
+    "duration": 2.85
+  },
+  {
+    "text": "And so at that point,\nwe need to use some way",
+    "start": 1928.21,
+    "duration": 4.98
+  },
+  {
+    "text": "to reduce the dimensionality\nof our count co-occurrence",
+    "start": 1933.19,
+    "duration": 3.355
+  },
+  {
+    "text": "vectors.",
+    "start": 1936.545,
+    "duration": 0.5
+  },
+  {
+    "text": "So if you have a good memory\nfrom a linear algebra class,",
+    "start": 1939.81,
+    "duration": 6.44
+  },
+  {
+    "text": "you hopefully saw singular\nvalue decomposition.",
+    "start": 1946.25,
+    "duration": 3.72
+  },
+  {
+    "text": "And it has various\nmathematical properties",
+    "start": 1949.97,
+    "duration": 3.99
+  },
+  {
+    "text": "that I'm not going to talk\nabout here of singular value",
+    "start": 1953.96,
+    "duration": 4.89
+  },
+  {
+    "text": "projection giving you an optimal\nway under a certain definition",
+    "start": 1958.85,
+    "duration": 3.81
+  },
+  {
+    "text": "of optimality of producing\na reduced dimensionality",
+    "start": 1962.66,
+    "duration": 2.604
+  },
+  {
+    "text": "matrix that maximally, or\nsorry, a pair of matrices",
+    "start": 1965.264,
+    "duration": 7.146
+  },
+  {
+    "text": "that maximally well lets you\nrecover the original matrix.",
+    "start": 1972.41,
+    "duration": 4.05
+  },
+  {
+    "text": "But the idea of the\nsingular value decomposition",
+    "start": 1976.46,
+    "duration": 3.0
+  },
+  {
+    "text": "is you can take any matrix\nsuch as our count matrix.",
+    "start": 1979.46,
+    "duration": 4.84
+  },
+  {
+    "text": "And you can decompose\nthat into three matrices.",
+    "start": 1984.3,
+    "duration": 6.71
+  },
+  {
+    "text": "U, a diagonal matrix sigma,\nand a V transpose matrix.",
+    "start": 1991.01,
+    "duration": 6.71
+  },
+  {
+    "text": "And this works for any shape.",
+    "start": 1997.72,
+    "duration": 2.01
+  },
+  {
+    "text": "Now in these matrices, some\nparts of it are never used.",
+    "start": 1999.73,
+    "duration": 5.82
+  },
+  {
+    "text": "Because since this\nmatrix is rectangular",
+    "start": 2005.55,
+    "duration": 2.94
+  },
+  {
+    "text": "there's nothing over here.",
+    "start": 2008.49,
+    "duration": 1.72
+  },
+  {
+    "text": "And so this part of the V\ntranspose matrix gets ignored.",
+    "start": 2010.21,
+    "duration": 5.15
+  },
+  {
+    "text": "But if you're wanting to\nget smaller dimensional",
+    "start": 2015.36,
+    "duration": 4.17
+  },
+  {
+    "text": "representations, what you do\nis take advantage of the fact",
+    "start": 2019.53,
+    "duration": 4.23
+  },
+  {
+    "text": "that the singular values inside\nthe diagonal sigma matrix",
+    "start": 2023.76,
+    "duration": 5.55
+  },
+  {
+    "text": "are ordered from largest\ndown to smallest.",
+    "start": 2029.31,
+    "duration": 3.52
+  },
+  {
+    "text": "So what we can do is just\ndelete out more of the matrix.",
+    "start": 2032.83,
+    "duration": 5.96
+  },
+  {
+    "text": "Delete out some singular\nvalues which effectively",
+    "start": 2038.79,
+    "duration": 3.78
+  },
+  {
+    "text": "means that in this product,\nsome of U and some of V",
+    "start": 2042.57,
+    "duration": 5.07
+  },
+  {
+    "text": "is also not used.",
+    "start": 2047.64,
+    "duration": 1.8
+  },
+  {
+    "text": "And so then as a\nresult of that, we're",
+    "start": 2049.44,
+    "duration": 2.43
+  },
+  {
+    "text": "getting lower dimensional\nrepresentations for our words,",
+    "start": 2051.87,
+    "duration": 6.519
+  },
+  {
+    "text": "if we're wanting to\nhave word vectors.",
+    "start": 2058.389,
+    "duration": 2.06
+  },
+  {
+    "text": "Which still do as\ngood as possible",
+    "start": 2060.449,
+    "duration": 2.821
+  },
+  {
+    "text": "a job within the\ngiven dimensionality",
+    "start": 2063.27,
+    "duration": 3.63
+  },
+  {
+    "text": "of enabling you to recover the\noriginal co-occurrence matrix.",
+    "start": 2066.9,
+    "duration": 7.0
+  },
+  {
+    "text": "So from a linear\nalgebra background,",
+    "start": 2073.9,
+    "duration": 3.18
+  },
+  {
+    "text": "this is the obvious\nthing to use.",
+    "start": 2077.08,
+    "duration": 3.25
+  },
+  {
+    "text": "So how does that work?",
+    "start": 2080.33,
+    "duration": 2.97
+  },
+  {
+    "text": "Well, if you just build a raw\ncount co-occurrence matrix",
+    "start": 2083.3,
+    "duration": 5.45
+  },
+  {
+    "text": "and run SVD on that and try\nand use those as word vectors,",
+    "start": 2088.75,
+    "duration": 5.04
+  },
+  {
+    "text": "it actually works poorly.",
+    "start": 2093.79,
+    "duration": 2.46
+  },
+  {
+    "text": "And it works poorly\nbecause if you",
+    "start": 2096.25,
+    "duration": 3.78
+  },
+  {
+    "text": "get into the mathematical\nassumptions of SVD,",
+    "start": 2100.03,
+    "duration": 2.4
+  },
+  {
+    "text": "you're expecting to have these\nnormally distributed errors.",
+    "start": 2102.43,
+    "duration": 4.8
+  },
+  {
+    "text": "And what you're getting\nwith word counts",
+    "start": 2107.23,
+    "duration": 2.857
+  },
+  {
+    "text": "looked not at all like\nsomeone's normal [INAUDIBLE]",
+    "start": 2110.087,
+    "duration": 6.413
+  },
+  {
+    "text": "because you have exceedingly\ncommon words like \"a,\" \"the,\"",
+    "start": 2116.5,
+    "duration": 3.51
+  },
+  {
+    "text": "and \"and\".",
+    "start": 2120.01,
+    "duration": 1.11
+  },
+  {
+    "text": "And you have a very large\nnumber of rare words.",
+    "start": 2121.12,
+    "duration": 2.94
+  },
+  {
+    "text": "So that doesn't work very well.",
+    "start": 2124.06,
+    "duration": 2.1
+  },
+  {
+    "text": "But you can actually\nget something",
+    "start": 2126.16,
+    "duration": 1.47
+  },
+  {
+    "text": "that works a lot better if you\nscale the counts in the cells.",
+    "start": 2127.63,
+    "duration": 4.86
+  },
+  {
+    "text": "So to deal with this problem\nof extremely frequent words,",
+    "start": 2132.49,
+    "duration": 3.857
+  },
+  {
+    "text": "there are some things we can do.",
+    "start": 2136.347,
+    "duration": 1.333
+  },
+  {
+    "text": "We could just take the\nlog of the raw counts.",
+    "start": 2137.68,
+    "duration": 3.63
+  },
+  {
+    "text": "We could kind of cap\nthe maximum count.",
+    "start": 2141.31,
+    "duration": 3.24
+  },
+  {
+    "text": "We could throw away\nthe function words.",
+    "start": 2144.55,
+    "duration": 2.49
+  },
+  {
+    "text": "And any of these ideas\nthat you build then",
+    "start": 2147.04,
+    "duration": 4.05
+  },
+  {
+    "text": "have an co-occurrence matrix\nthat you get more useful word",
+    "start": 2151.09,
+    "duration": 3.72
+  },
+  {
+    "text": "vectors from running\nsomething like SVD.",
+    "start": 2154.81,
+    "duration": 3.63
+  },
+  {
+    "text": "And indeed these kind of models\nwere explored in the 1990s",
+    "start": 2158.44,
+    "duration": 5.25
+  },
+  {
+    "text": "and in the 2000s.",
+    "start": 2163.69,
+    "duration": 1.95
+  },
+  {
+    "text": "And in particular, Doug\nRohde explored a number",
+    "start": 2165.64,
+    "duration": 4.32
+  },
+  {
+    "text": "of these ideas as\nto how to improve",
+    "start": 2169.96,
+    "duration": 2.67
+  },
+  {
+    "text": "the co-occurrence\nmatrix in a model",
+    "start": 2172.63,
+    "duration": 2.25
+  },
+  {
+    "text": "that he built that\nwas called COALS.",
+    "start": 2174.88,
+    "duration": 3.03
+  },
+  {
+    "text": "And actually in his COALS\nmodel, he observed the fact",
+    "start": 2177.91,
+    "duration": 6.75
+  },
+  {
+    "text": "that you could get the same\nkind of linear components",
+    "start": 2184.66,
+    "duration": 6.21
+  },
+  {
+    "text": "that our semantic components\nthat we saw yesterday",
+    "start": 2190.87,
+    "duration": 3.84
+  },
+  {
+    "text": "when talking about analogies.",
+    "start": 2194.71,
+    "duration": 2.61
+  },
+  {
+    "text": "So for example, this is\na figure from his paper",
+    "start": 2197.32,
+    "duration": 4.26
+  },
+  {
+    "text": "and you can see that we seem to\nhave a meaning component going",
+    "start": 2201.58,
+    "duration": 4.65
+  },
+  {
+    "text": "from a verb to the\nperson who does the verb.",
+    "start": 2206.23,
+    "duration": 3.97
+  },
+  {
+    "text": "So drive to driver, swim to\nswimmer, teach to teacher,",
+    "start": 2210.2,
+    "duration": 3.56
+  },
+  {
+    "text": "marry to priest.",
+    "start": 2213.76,
+    "duration": 1.41
+  },
+  {
+    "text": "And that these vector\ncomponents are not perfectly",
+    "start": 2215.17,
+    "duration": 4.35
+  },
+  {
+    "text": "but are roughly parallel\nand roughly the same size.",
+    "start": 2219.52,
+    "duration": 5.07
+  },
+  {
+    "text": "And so we have a\nmeaning component",
+    "start": 2224.59,
+    "duration": 1.98
+  },
+  {
+    "text": "there that we could\nadd on to another word",
+    "start": 2226.57,
+    "duration": 3.42
+  },
+  {
+    "text": "just like we did for\npreviously, for analogies.",
+    "start": 2229.99,
+    "duration": 3.06
+  },
+  {
+    "text": "We could say drive is to\ndriver as marry is to what,",
+    "start": 2233.05,
+    "duration": 4.8
+  },
+  {
+    "text": "and we add on this screen\nvector component, which is",
+    "start": 2237.85,
+    "duration": 3.54
+  },
+  {
+    "text": "roughly the same as this one.",
+    "start": 2241.39,
+    "duration": 1.62
+  },
+  {
+    "text": "And we'd say oh, priest.",
+    "start": 2243.01,
+    "duration": 1.77
+  },
+  {
+    "text": "So that this space could\nactually get some word",
+    "start": 2244.78,
+    "duration": 4.38
+  },
+  {
+    "text": "vectors analogies right as well.",
+    "start": 2249.16,
+    "duration": 3.97
+  },
+  {
+    "text": "And so that seemed\nreally interesting to us",
+    "start": 2253.13,
+    "duration": 3.23
+  },
+  {
+    "text": "around the time\nword2vec came out,",
+    "start": 2256.36,
+    "duration": 3.3
+  },
+  {
+    "text": "of wanting to understand better\nwhat the iterative updating",
+    "start": 2259.66,
+    "duration": 3.03
+  },
+  {
+    "text": "algorithm of word2vec did.",
+    "start": 2262.69,
+    "duration": 2.22
+  },
+  {
+    "text": "And how it related to these\nmore linear algebra based",
+    "start": 2264.91,
+    "duration": 3.3
+  },
+  {
+    "text": "methods that had been explored\nin the couple of decades",
+    "start": 2268.21,
+    "duration": 3.45
+  },
+  {
+    "text": "previously.",
+    "start": 2271.66,
+    "duration": 1.3
+  },
+  {
+    "text": "And so for the next bit I\nwant to tell you a little bit",
+    "start": 2272.96,
+    "duration": 3.32
+  },
+  {
+    "text": "about the GLoVe algorithm,\nwhich was an algorithm for word",
+    "start": 2276.28,
+    "duration": 3.75
+  },
+  {
+    "text": "vectors that was made by\nJeffrey Pennington, Richard",
+    "start": 2280.03,
+    "duration": 3.66
+  },
+  {
+    "text": "Socher, and me, in 2014.",
+    "start": 2283.69,
+    "duration": 3.48
+  },
+  {
+    "text": "And so the starting\npoint of this",
+    "start": 2287.17,
+    "duration": 1.92
+  },
+  {
+    "text": "was to try to connect together\nthe linear algebra based",
+    "start": 2289.09,
+    "duration": 5.16
+  },
+  {
+    "text": "methods on co-occurrence\nmatrices like LSA and COALS",
+    "start": 2294.25,
+    "duration": 3.87
+  },
+  {
+    "text": "with the models like skip-gram,\nCBOW and their other friends,",
+    "start": 2298.12,
+    "duration": 4.53
+  },
+  {
+    "text": "which were iterative\nneural updating algorithms.",
+    "start": 2302.65,
+    "duration": 3.57
+  },
+  {
+    "text": "So on the one hand, the linear\nalgebra methods actually",
+    "start": 2306.22,
+    "duration": 4.59
+  },
+  {
+    "text": "seemed like they had\nadvantages for fast training",
+    "start": 2310.81,
+    "duration": 3.21
+  },
+  {
+    "text": "and efficient usage\nof statistics.",
+    "start": 2314.02,
+    "duration": 2.43
+  },
+  {
+    "text": "But although there had been work\non capturing words similarities",
+    "start": 2316.45,
+    "duration": 5.1
+  },
+  {
+    "text": "with them, by and\nlarge the results",
+    "start": 2321.55,
+    "duration": 3.3
+  },
+  {
+    "text": "weren't as good perhaps because\nof disproportionate importance",
+    "start": 2324.85,
+    "duration": 3.0
+  },
+  {
+    "text": "given to large\ncounts in the main.",
+    "start": 2327.85,
+    "duration": 2.13
+  },
+  {
+    "text": "Conversely, the\nneural models it seems",
+    "start": 2329.98,
+    "duration": 6.96
+  },
+  {
+    "text": "like if you're just doing these\ngradient updates on Windows,",
+    "start": 2336.94,
+    "duration": 3.15
+  },
+  {
+    "text": "you're somehow\ninefficiently using",
+    "start": 2340.09,
+    "duration": 2.37
+  },
+  {
+    "text": "statistics versus the\nco-occurrence matrix.",
+    "start": 2342.46,
+    "duration": 3.24
+  },
+  {
+    "text": "But on the other hand,\nit's actually easier",
+    "start": 2345.7,
+    "duration": 3.03
+  },
+  {
+    "text": "to scale to a very large corpus\nby trading time for space.",
+    "start": 2348.73,
+    "duration": 5.25
+  },
+  {
+    "text": "And at that time, it seemed\nlike the neural methods just",
+    "start": 2353.98,
+    "duration": 4.92
+  },
+  {
+    "text": "worked better for people.",
+    "start": 2358.9,
+    "duration": 1.32
+  },
+  {
+    "text": "That they generated improved\nperformance on many tasks,",
+    "start": 2360.22,
+    "duration": 3.28
+  },
+  {
+    "text": "not just on word similarity.",
+    "start": 2363.5,
+    "duration": 1.94
+  },
+  {
+    "text": "And that they could\ncapture complex patterns,",
+    "start": 2365.44,
+    "duration": 2.98
+  },
+  {
+    "text": "such as the analogies that\nwent beyond word similarity.",
+    "start": 2368.42,
+    "duration": 4.95
+  },
+  {
+    "text": "And so what we wanted to\ndo was understand a bit",
+    "start": 2373.37,
+    "duration": 2.88
+  },
+  {
+    "text": "more as to what\nproperties you need",
+    "start": 2376.25,
+    "duration": 3.42
+  },
+  {
+    "text": "to have these analogies work\nout as I showed last time.",
+    "start": 2379.67,
+    "duration": 5.17
+  },
+  {
+    "text": "And so what we realized\nwas that if you'd",
+    "start": 2384.84,
+    "duration": 3.8
+  },
+  {
+    "text": "like to have these sort\nof vector subtractions",
+    "start": 2388.64,
+    "duration": 5.52
+  },
+  {
+    "text": "and additions work\nfor an analogy,",
+    "start": 2394.16,
+    "duration": 4.74
+  },
+  {
+    "text": "the property that you want\nis for meaning components.",
+    "start": 2398.9,
+    "duration": 5.55
+  },
+  {
+    "text": "So a meaning\ncomponent is something",
+    "start": 2404.45,
+    "duration": 2.25
+  },
+  {
+    "text": "like going from male to\nfemale, queen to king.",
+    "start": 2406.7,
+    "duration": 4.62
+  },
+  {
+    "text": "Or going from a verb to\nits agent, truck to driver.",
+    "start": 2411.32,
+    "duration": 8.22
+  },
+  {
+    "text": "That those meaning\ncomponents should",
+    "start": 2419.54,
+    "duration": 2.28
+  },
+  {
+    "text": "be represented as ratios of\nco-occurrence probabilities.",
+    "start": 2421.82,
+    "duration": 4.27
+  },
+  {
+    "text": "So here's an example\nthat shows that.",
+    "start": 2426.09,
+    "duration": 3.21
+  },
+  {
+    "text": "OK, so suppose the\nmeaning component",
+    "start": 2429.3,
+    "duration": 2.93
+  },
+  {
+    "text": "that we want to get out is\nthe spectrum from solid to gas",
+    "start": 2432.23,
+    "duration": 5.94
+  },
+  {
+    "text": "as in physics.",
+    "start": 2438.17,
+    "duration": 1.38
+  },
+  {
+    "text": "Well, you'd think that you\ncan get the solid part of it",
+    "start": 2439.55,
+    "duration": 5.04
+  },
+  {
+    "text": "perhaps by saying does the\nword co-occur with ice?",
+    "start": 2444.59,
+    "duration": 3.66
+  },
+  {
+    "text": "And the word \"solid\" occurs\nwith ice so that looks hopeful.",
+    "start": 2448.25,
+    "duration": 3.72
+  },
+  {
+    "text": "And gas doesn't occur with ice\nmuch, so that looks hopeful.",
+    "start": 2451.97,
+    "duration": 3.66
+  },
+  {
+    "text": "But the problem is the\nword \"water\" will also",
+    "start": 2455.63,
+    "duration": 2.73
+  },
+  {
+    "text": "occur a lot with ice.",
+    "start": 2458.36,
+    "duration": 2.1
+  },
+  {
+    "text": "And if you just take\nsome other random word",
+    "start": 2460.46,
+    "duration": 2.13
+  },
+  {
+    "text": "like the word\n\"random\", it probably",
+    "start": 2462.59,
+    "duration": 2.07
+  },
+  {
+    "text": "doesn't occur with ice much.",
+    "start": 2464.66,
+    "duration": 3.21
+  },
+  {
+    "text": "In contrast, if you look at\nwords co-occurring with steam,",
+    "start": 2467.87,
+    "duration": 5.7
+  },
+  {
+    "text": "solid won't occur with\nsteam much, but gas will.",
+    "start": 2473.57,
+    "duration": 3.63
+  },
+  {
+    "text": "The water will again and\nrandom will be small.",
+    "start": 2477.2,
+    "duration": 3.67
+  },
+  {
+    "text": "So to get out the\nmeaning component",
+    "start": 2480.87,
+    "duration": 1.79
+  },
+  {
+    "text": "we want of going from gas to\nsolid, what's actually really",
+    "start": 2482.66,
+    "duration": 4.56
+  },
+  {
+    "text": "useful is to look at the\nratio of these co-occurrence",
+    "start": 2487.22,
+    "duration": 3.42
+  },
+  {
+    "text": "probabilities.",
+    "start": 2490.64,
+    "duration": 1.86
+  },
+  {
+    "text": "Because then we get a\nspectrum from large to small",
+    "start": 2492.5,
+    "duration": 4.74
+  },
+  {
+    "text": "between solid and gas.",
+    "start": 2497.24,
+    "duration": 1.89
+  },
+  {
+    "text": "Whereas for water\nand a random word,",
+    "start": 2499.13,
+    "duration": 2.35
+  },
+  {
+    "text": "it basically cancels\nout and gives you 1.",
+    "start": 2501.48,
+    "duration": 4.31
+  },
+  {
+    "text": "I just wrote these numbers in.",
+    "start": 2505.79,
+    "duration": 1.69
+  },
+  {
+    "text": "But if you count them\nup in a large corpus",
+    "start": 2507.48,
+    "duration": 3.59
+  },
+  {
+    "text": "it is basically what you get.",
+    "start": 2511.07,
+    "duration": 1.96
+  },
+  {
+    "text": "So here are actual\nco-occurrence probabilities.",
+    "start": 2513.03,
+    "duration": 3.26
+  },
+  {
+    "text": "And that for water and my random\nword which was \"fashion\" here,",
+    "start": 2516.29,
+    "duration": 4.92
+  },
+  {
+    "text": "these are approximately 1.",
+    "start": 2521.21,
+    "duration": 2.22
+  },
+  {
+    "text": "Whereas for the\nratio of probability",
+    "start": 2523.43,
+    "duration": 4.56
+  },
+  {
+    "text": "of co-occurrence of solid\nwith ice or steam is about 10.",
+    "start": 2527.99,
+    "duration": 4.62
+  },
+  {
+    "text": "And for gas it's about a 10th.",
+    "start": 2532.61,
+    "duration": 3.78
+  },
+  {
+    "text": "So how can we\ncapture these ratios",
+    "start": 2536.39,
+    "duration": 5.52
+  },
+  {
+    "text": "of co-occurrence probabilities\nas linear meaning components?",
+    "start": 2541.91,
+    "duration": 4.37
+  },
+  {
+    "text": "So that within our\nword vector space,",
+    "start": 2546.28,
+    "duration": 2.09
+  },
+  {
+    "text": "we can just add and subtract\nlinear meaning components.",
+    "start": 2548.37,
+    "duration": 4.07
+  },
+  {
+    "text": "Well, it seems\nlike the way we can",
+    "start": 2552.44,
+    "duration": 2.76
+  },
+  {
+    "text": "achieve that is if we\nbuild a log-bilinear model.",
+    "start": 2555.2,
+    "duration": 4.39
+  },
+  {
+    "text": "So that the dot product\nbetween two word vectors",
+    "start": 2559.59,
+    "duration": 4.4
+  },
+  {
+    "text": "attempts to approximate\nthe log of the probability",
+    "start": 2563.99,
+    "duration": 3.24
+  },
+  {
+    "text": "of co-occurrence.",
+    "start": 2567.23,
+    "duration": 1.44
+  },
+  {
+    "text": "So if you do that, you\nthen get this property",
+    "start": 2568.67,
+    "duration": 4.56
+  },
+  {
+    "text": "that the difference\nbetween two vectors,",
+    "start": 2573.23,
+    "duration": 5.1
+  },
+  {
+    "text": "its similarity to\nanother word corresponds",
+    "start": 2578.33,
+    "duration": 3.81
+  },
+  {
+    "text": "to the log of the\nprobability ratio shown",
+    "start": 2582.14,
+    "duration": 2.82
+  },
+  {
+    "text": "on the previous slide.",
+    "start": 2584.96,
+    "duration": 2.05
+  },
+  {
+    "text": "So the GloVe model\nwanted to try and unify",
+    "start": 2587.01,
+    "duration": 5.42
+  },
+  {
+    "text": "the thinking between\nthe co-occurrence matrix",
+    "start": 2592.43,
+    "duration": 3.54
+  },
+  {
+    "text": "models and the neural\nmodels by being",
+    "start": 2595.97,
+    "duration": 4.41
+  },
+  {
+    "text": "in some way similar\nto a neural model.",
+    "start": 2600.38,
+    "duration": 2.07
+  },
+  {
+    "text": "But actually calculated on\ntop of a co-occurrence matrix",
+    "start": 2602.45,
+    "duration": 5.37
+  },
+  {
+    "text": "count.",
+    "start": 2607.82,
+    "duration": 1.38
+  },
+  {
+    "text": "So we had an explicit\nloss function.",
+    "start": 2609.2,
+    "duration": 3.42
+  },
+  {
+    "text": "And our explicit\nloss function is",
+    "start": 2612.62,
+    "duration": 3.09
+  },
+  {
+    "text": "that we wanted the\ndot product to be",
+    "start": 2615.71,
+    "duration": 2.4
+  },
+  {
+    "text": "similar to the log\nof the co-occurrence.",
+    "start": 2618.11,
+    "duration": 3.87
+  },
+  {
+    "text": "We actually added in\nsome bias terms here",
+    "start": 2621.98,
+    "duration": 2.16
+  },
+  {
+    "text": "but I'll ignore\nthose for the moment.",
+    "start": 2624.14,
+    "duration": 2.01
+  },
+  {
+    "text": "And we wanted to not have\nvery common words dominate.",
+    "start": 2626.15,
+    "duration": 3.87
+  },
+  {
+    "text": "And so we capped the\neffect of high word",
+    "start": 2630.02,
+    "duration": 3.45
+  },
+  {
+    "text": "counts using this f\nfunction that's shown here.",
+    "start": 2633.47,
+    "duration": 4.21
+  },
+  {
+    "text": "And then we could optimize\nthis j function directly",
+    "start": 2637.68,
+    "duration": 5.33
+  },
+  {
+    "text": "on the co-occurrence\ncount matrix.",
+    "start": 2643.01,
+    "duration": 2.85
+  },
+  {
+    "text": "So that gave us fast training\nscalable to huge corpora.",
+    "start": 2645.86,
+    "duration": 5.3
+  },
+  {
+    "text": "And so this algorithm\nworked very well.",
+    "start": 2651.16,
+    "duration": 4.03
+  },
+  {
+    "text": "So if you run this\nalgorithm, ask what",
+    "start": 2655.19,
+    "duration": 3.35
+  },
+  {
+    "text": "are the nearest words to frog?",
+    "start": 2658.54,
+    "duration": 1.68
+  },
+  {
+    "text": "You get \"frogs\",\n\"toad\", and then you",
+    "start": 2660.22,
+    "duration": 2.34
+  },
+  {
+    "text": "get some complicated words.",
+    "start": 2662.56,
+    "duration": 1.53
+  },
+  {
+    "text": "But it turns out\nthey are all frogs.",
+    "start": 2664.09,
+    "duration": 3.12
+  },
+  {
+    "text": "Until you get down to\nlizards, so litoria's",
+    "start": 2667.21,
+    "duration": 2.25
+  },
+  {
+    "text": "that lovely tree frog there.",
+    "start": 2669.46,
+    "duration": 2.67
+  },
+  {
+    "text": "And so this actually seemed\nto work out pretty well.",
+    "start": 2672.13,
+    "duration": 3.75
+  },
+  {
+    "text": "How well did it work out?",
+    "start": 2675.88,
+    "duration": 1.95
+  },
+  {
+    "text": "To discuss that a\nbit more I now want",
+    "start": 2677.83,
+    "duration": 2.67
+  },
+  {
+    "text": "to say something about how\ndo we evaluate word vectors.",
+    "start": 2680.5,
+    "duration": 5.22
+  },
+  {
+    "text": "And are we good up to\nthere for questions?",
+    "start": 2685.72,
+    "duration": 1.95
+  },
+  {
+    "text": "We got some questions.",
+    "start": 2690.26,
+    "duration": 1.66
+  },
+  {
+    "text": "What do you mean by an\ninefficient use of statistics",
+    "start": 2691.92,
+    "duration": 2.21
+  },
+  {
+    "text": "as a con for skip-gram?",
+    "start": 2694.13,
+    "duration": 1.91
+  },
+  {
+    "text": "Well, what I mean is\nthat for word2vec you're",
+    "start": 2696.04,
+    "duration": 6.94
+  },
+  {
+    "text": "just looking at one\ncenter word at a time",
+    "start": 2702.98,
+    "duration": 5.26
+  },
+  {
+    "text": "and generating a few\nnegative samples.",
+    "start": 2708.24,
+    "duration": 3.06
+  },
+  {
+    "text": "And so it sort of seems\nlike [AUDIO OUT] doing",
+    "start": 2711.3,
+    "duration": 3.87
+  },
+  {
+    "text": "something really precise there.",
+    "start": 2715.17,
+    "duration": 2.01
+  },
+  {
+    "text": "Whereas if you're doing\nan optimization algorithm",
+    "start": 2717.18,
+    "duration": 4.95
+  },
+  {
+    "text": "on the whole matrix at\nonce, well, you actually",
+    "start": 2722.13,
+    "duration": 3.51
+  },
+  {
+    "text": "know everything about\nthe matrix at once.",
+    "start": 2725.64,
+    "duration": 1.95
+  },
+  {
+    "text": "You're not just looking at\nwhat other words occurred",
+    "start": 2727.59,
+    "duration": 4.53
+  },
+  {
+    "text": "in this one context\nof the center word.",
+    "start": 2732.12,
+    "duration": 3.06
+  },
+  {
+    "text": "You've got the entire vector\nof co-occurrence counts",
+    "start": 2735.18,
+    "duration": 3.36
+  },
+  {
+    "text": "of the center word\nand another word.",
+    "start": 2738.54,
+    "duration": 2.52
+  },
+  {
+    "text": "And so therefore you can much\nmore efficiently and less",
+    "start": 2741.06,
+    "duration": 3.93
+  },
+  {
+    "text": "noisily work out how\nto minimize your loss.",
+    "start": 2744.99,
+    "duration": 3.735
+  },
+  {
+    "text": "OK, I'll go on.",
+    "start": 2752.69,
+    "duration": 1.26
+  },
+  {
+    "text": "OK, so I've sort of said,\nlook at these word vectors,",
+    "start": 2753.95,
+    "duration": 4.29
+  },
+  {
+    "text": "they're great.",
+    "start": 2758.24,
+    "duration": 0.84
+  },
+  {
+    "text": "And I showed you a\nfew things at the end",
+    "start": 2759.08,
+    "duration": 2.49
+  },
+  {
+    "text": "of the last class, which\nargued, hey, these are great.",
+    "start": 2761.57,
+    "duration": 3.93
+  },
+  {
+    "text": "They work out these analogies.",
+    "start": 2765.5,
+    "duration": 2.97
+  },
+  {
+    "text": "They show similarity\nand things like this.",
+    "start": 2768.47,
+    "duration": 3.21
+  },
+  {
+    "text": "We want to make this\na bit more precise.",
+    "start": 2771.68,
+    "duration": 2.82
+  },
+  {
+    "text": "And indeed for natural\nlanguage processing",
+    "start": 2774.5,
+    "duration": 2.85
+  },
+  {
+    "text": "as in other areas\nof machine learning,",
+    "start": 2777.35,
+    "duration": 2.13
+  },
+  {
+    "text": "a big part of what\npeople are doing",
+    "start": 2779.48,
+    "duration": 2.43
+  },
+  {
+    "text": "is working out good ways\nto evaluate knowledge",
+    "start": 2781.91,
+    "duration": 3.3
+  },
+  {
+    "text": "that things have.",
+    "start": 2785.21,
+    "duration": 2.1
+  },
+  {
+    "text": "So how can we really\nevaluate word vectors?",
+    "start": 2787.31,
+    "duration": 2.8
+  },
+  {
+    "text": "So in general for\nan NLP evaluation,",
+    "start": 2790.11,
+    "duration": 2.72
+  },
+  {
+    "text": "people talk about two\nways of evaluation.",
+    "start": 2792.83,
+    "duration": 2.91
+  },
+  {
+    "text": "Intrinsic and extrinsic.",
+    "start": 2795.74,
+    "duration": 2.23
+  },
+  {
+    "text": "So an intrinsic evaluation\nmeans that you evaluate directly",
+    "start": 2797.97,
+    "duration": 6.71
+  },
+  {
+    "text": "on the specific or intermediate\nsubtasks that you've",
+    "start": 2804.68,
+    "duration": 3.63
+  },
+  {
+    "text": "been working on.",
+    "start": 2808.31,
+    "duration": 0.94
+  },
+  {
+    "text": "So I want a measure where\nI can directly score",
+    "start": 2809.25,
+    "duration": 3.11
+  },
+  {
+    "text": "how good my word vectors are.",
+    "start": 2812.36,
+    "duration": 2.01
+  },
+  {
+    "text": "And normally,\nintrinsic evaluations",
+    "start": 2814.37,
+    "duration": 3.45
+  },
+  {
+    "text": "are fast to compute.",
+    "start": 2817.82,
+    "duration": 1.66
+  },
+  {
+    "text": "They help you to\nunderstand the component",
+    "start": 2819.48,
+    "duration": 2.48
+  },
+  {
+    "text": "you've been working on.",
+    "start": 2821.96,
+    "duration": 1.69
+  },
+  {
+    "text": "But often, simply trying\nto optimize that component",
+    "start": 2823.65,
+    "duration": 4.82
+  },
+  {
+    "text": "may or may not have a\nvery big good effect",
+    "start": 2828.47,
+    "duration": 3.57
+  },
+  {
+    "text": "on the overall system that\nyou're trying to build.",
+    "start": 2832.04,
+    "duration": 4.85
+  },
+  {
+    "text": "So people have also\nbeen very interested",
+    "start": 2836.89,
+    "duration": 3.11
+  },
+  {
+    "text": "in extrinsic evaluations.",
+    "start": 2840.0,
+    "duration": 2.1
+  },
+  {
+    "text": "So an extrinsic evaluation is\nthat you take some real task",
+    "start": 2842.1,
+    "duration": 5.07
+  },
+  {
+    "text": "of interest to human beings.",
+    "start": 2847.17,
+    "duration": 1.86
+  },
+  {
+    "text": "Whether that's web search\nor machine translation",
+    "start": 2849.03,
+    "duration": 3.03
+  },
+  {
+    "text": "or something like that,\nand you say your goal",
+    "start": 2852.06,
+    "duration": 3.51
+  },
+  {
+    "text": "is to actually improve\nperformance on that task.",
+    "start": 2855.57,
+    "duration": 3.66
+  },
+  {
+    "text": "Well that's a real proof that\nthis is doing something useful.",
+    "start": 2859.23,
+    "duration": 5.03
+  },
+  {
+    "text": "So in some ways that's\njust clearly better.",
+    "start": 2864.26,
+    "duration": 3.52
+  },
+  {
+    "text": "But on the other hand, it\nalso has some disadvantages.",
+    "start": 2867.78,
+    "duration": 4.45
+  },
+  {
+    "text": "It takes a lot longer to\nevaluate on an extrinsic task",
+    "start": 2872.23,
+    "duration": 5.27
+  },
+  {
+    "text": "because it's a\nmuch bigger system.",
+    "start": 2877.5,
+    "duration": 2.04
+  },
+  {
+    "text": "And sometimes when\nyou change things,",
+    "start": 2879.54,
+    "duration": 4.45
+  },
+  {
+    "text": "it's unclear whether the fact\nthat the numbers went down",
+    "start": 2883.99,
+    "duration": 4.1
+  },
+  {
+    "text": "was because you now\nhave worse word vectors",
+    "start": 2888.09,
+    "duration": 3.03
+  },
+  {
+    "text": "or whether it's just\nsomehow the other components",
+    "start": 2891.12,
+    "duration": 3.18
+  },
+  {
+    "text": "of the system interacted better\nwith your old word vectors.",
+    "start": 2894.3,
+    "duration": 4.84
+  },
+  {
+    "text": "And if you change the\nother components as well,",
+    "start": 2899.14,
+    "duration": 2.12
+  },
+  {
+    "text": "things would get better again.",
+    "start": 2901.26,
+    "duration": 2.01
+  },
+  {
+    "text": "So in some ways it\ncan sometimes be",
+    "start": 2903.27,
+    "duration": 2.36
+  },
+  {
+    "text": "muddier to see if\nyou're making progress.",
+    "start": 2905.63,
+    "duration": 3.52
+  },
+  {
+    "text": "But I'll touch on both\nof these methods here.",
+    "start": 2909.15,
+    "duration": 4.87
+  },
+  {
+    "text": "So for intrinsic\nevaluation of word vectors,",
+    "start": 2914.02,
+    "duration": 3.77
+  },
+  {
+    "text": "one way which we\nmentioned last time",
+    "start": 2917.79,
+    "duration": 4.17
+  },
+  {
+    "text": "was this word vector analogy.",
+    "start": 2921.96,
+    "duration": 2.33
+  },
+  {
+    "text": "So we could simply\ngive our models",
+    "start": 2924.29,
+    "duration": 2.38
+  },
+  {
+    "text": "a big collection of word\nvector analogy problems.",
+    "start": 2926.67,
+    "duration": 3.33
+  },
+  {
+    "text": "So we could say man is to\nwoman as king is to what?",
+    "start": 2930.0,
+    "duration": 3.75
+  },
+  {
+    "text": "And ask the model to find\nthe word that is closest",
+    "start": 2933.75,
+    "duration": 4.47
+  },
+  {
+    "text": "using that sort of word\nanalogy computation",
+    "start": 2938.22,
+    "duration": 3.15
+  },
+  {
+    "text": "and hope that what comes\nout there is queen.",
+    "start": 2941.37,
+    "duration": 4.41
+  },
+  {
+    "text": "And so that's something people\nhave done and have worked out",
+    "start": 2945.78,
+    "duration": 2.85
+  },
+  {
+    "text": "an accuracy score of how\noften that you are right.",
+    "start": 2948.63,
+    "duration": 5.31
+  },
+  {
+    "text": "At this point I should just\nmention one little trick",
+    "start": 2953.94,
+    "duration": 3.78
+  },
+  {
+    "text": "of these word vector\nanalogies that everyone uses",
+    "start": 2957.72,
+    "duration": 3.75
+  },
+  {
+    "text": "but not everyone talks about\na lot in the first instance.",
+    "start": 2961.47,
+    "duration": 4.11
+  },
+  {
+    "text": "I mean there's a little\ntrick which you can find",
+    "start": 2965.58,
+    "duration": 3.21
+  },
+  {
+    "text": "in the Jensen code if you look\nat it that when it does man is",
+    "start": 2968.79,
+    "duration": 4.235
+  },
+  {
+    "text": "to woman as king is to what,\nsomething that could often",
+    "start": 2973.025,
+    "duration": 9.055
+  },
+  {
+    "text": "happen is that\nactually the word--",
+    "start": 2982.08,
+    "duration": 3.15
+  },
+  {
+    "text": "once you do your pluses\nand your minuses--",
+    "start": 2985.23,
+    "duration": 2.67
+  },
+  {
+    "text": "that the word that will actually\nbe closest is still king.",
+    "start": 2987.9,
+    "duration": 6.57
+  },
+  {
+    "text": "So the way people\nalways do this is",
+    "start": 2994.47,
+    "duration": 2.97
+  },
+  {
+    "text": "that they don't allow\none of the three input",
+    "start": 2997.44,
+    "duration": 2.64
+  },
+  {
+    "text": "words in the selection process.",
+    "start": 3000.08,
+    "duration": 3.43
+  },
+  {
+    "text": "So you're choosing\nthe nearest word that",
+    "start": 3003.51,
+    "duration": 2.33
+  },
+  {
+    "text": "isn't one of the input words.",
+    "start": 3005.84,
+    "duration": 1.275
+  },
+  {
+    "text": "OK, so since here it's showing\nresults from the GloVe vectors.",
+    "start": 3010.34,
+    "duration": 5.7
+  },
+  {
+    "text": "So the GloVe vectors have\nthis strong linear component",
+    "start": 3016.04,
+    "duration": 4.47
+  },
+  {
+    "text": "property just like I\nshowed before for COALS.",
+    "start": 3020.51,
+    "duration": 5.89
+  },
+  {
+    "text": "So this is for the\nmale-female dimension.",
+    "start": 3026.4,
+    "duration": 4.13
+  },
+  {
+    "text": "And so because of this you'd\nexpect in a lot of cases",
+    "start": 3030.53,
+    "duration": 3.87
+  },
+  {
+    "text": "that word analogies would work.",
+    "start": 3034.4,
+    "duration": 1.92
+  },
+  {
+    "text": "Because I can take the vector\ndifference of man and woman",
+    "start": 3036.32,
+    "duration": 3.57
+  },
+  {
+    "text": "and then if I add that vector\ndifference onto brother,",
+    "start": 3039.89,
+    "duration": 3.18
+  },
+  {
+    "text": "I expect to get to\nsister and king, queen,",
+    "start": 3043.07,
+    "duration": 3.81
+  },
+  {
+    "text": "and for many of these examples.",
+    "start": 3046.88,
+    "duration": 1.95
+  },
+  {
+    "text": "But of course, they may\nnot always work, right?",
+    "start": 3048.83,
+    "duration": 2.88
+  },
+  {
+    "text": "Because if I start from emperor,\nit's sort of more of a lean.",
+    "start": 3051.71,
+    "duration": 4.08
+  },
+  {
+    "text": "And so it might turn out that I\nget countess or duchess coming",
+    "start": 3055.79,
+    "duration": 3.69
+  },
+  {
+    "text": "out instead.",
+    "start": 3059.48,
+    "duration": 2.77
+  },
+  {
+    "text": "You can do this for\nvarious different relations",
+    "start": 3062.25,
+    "duration": 2.94
+  },
+  {
+    "text": "or different semantic relations\nSo these word vectors actually",
+    "start": 3065.19,
+    "duration": 4.41
+  },
+  {
+    "text": "learn quite a bit of\njust world knowledge.",
+    "start": 3069.6,
+    "duration": 2.56
+  },
+  {
+    "text": "So here's the company's CEO.",
+    "start": 3072.16,
+    "duration": 2.42
+  },
+  {
+    "text": "Or this is the company's\nCEO around 2010 to 2014",
+    "start": 3074.58,
+    "duration": 4.62
+  },
+  {
+    "text": "when the data was taken\nfrom word vectors.",
+    "start": 3079.2,
+    "duration": 4.23
+  },
+  {
+    "text": "And as well as semantic things\nor pragmatic things like this,",
+    "start": 3083.43,
+    "duration": 3.99
+  },
+  {
+    "text": "they also learn\nsyntactic things.",
+    "start": 3087.42,
+    "duration": 1.96
+  },
+  {
+    "text": "So here are vectors\nfor positive,",
+    "start": 3089.38,
+    "duration": 2.54
+  },
+  {
+    "text": "comparative, and superlative\nforms of adjectives.",
+    "start": 3091.92,
+    "duration": 3.36
+  },
+  {
+    "text": "And you can see those also move\nin roughly linear components.",
+    "start": 3095.28,
+    "duration": 5.53
+  },
+  {
+    "text": "So the word2vec people built\na data set of analogies",
+    "start": 3100.81,
+    "duration": 4.61
+  },
+  {
+    "text": "so you could evaluate different\nmodels on the accuracy",
+    "start": 3105.42,
+    "duration": 3.03
+  },
+  {
+    "text": "of their analogies.",
+    "start": 3108.45,
+    "duration": 2.1
+  },
+  {
+    "text": "And so here's how\nyou can do this",
+    "start": 3110.55,
+    "duration": 3.39
+  },
+  {
+    "text": "and this gives some numbers.",
+    "start": 3113.94,
+    "duration": 1.53
+  },
+  {
+    "text": "So there are semantic\nand syntactic analogies.",
+    "start": 3115.47,
+    "duration": 2.73
+  },
+  {
+    "text": "I'll just look at the totals.",
+    "start": 3118.2,
+    "duration": 2.7
+  },
+  {
+    "text": "OK, so what I said\nbefore is if you just",
+    "start": 3120.9,
+    "duration": 2.49
+  },
+  {
+    "text": "use unscaled\nco-occurrence counts",
+    "start": 3123.39,
+    "duration": 4.95
+  },
+  {
+    "text": "and pass them through an\nSVD, things work terribly.",
+    "start": 3128.34,
+    "duration": 3.33
+  },
+  {
+    "text": "And you see that there,\nyou only get 7.3.",
+    "start": 3131.67,
+    "duration": 2.97
+  },
+  {
+    "text": "But then as I also pointed\nout if you do some scaling",
+    "start": 3134.64,
+    "duration": 3.24
+  },
+  {
+    "text": "you can actually get SVD\nof a scaled count matrix",
+    "start": 3137.88,
+    "duration": 4.08
+  },
+  {
+    "text": "to work reasonably well.",
+    "start": 3141.96,
+    "duration": 1.57
+  },
+  {
+    "text": "So this SVD-L is similar\nto the COALS model.",
+    "start": 3143.53,
+    "duration": 5.24
+  },
+  {
+    "text": "And now we're\ngetting up to 60.1,",
+    "start": 3148.77,
+    "duration": 2.22
+  },
+  {
+    "text": "which actually isn't\na bad score, right?",
+    "start": 3150.99,
+    "duration": 1.68
+  },
+  {
+    "text": "So you can actually do a decent\njob without a neural network.",
+    "start": 3152.67,
+    "duration": 3.96
+  },
+  {
+    "text": "And then here are the two\nvariants of the word2vec model.",
+    "start": 3156.63,
+    "duration": 6.55
+  },
+  {
+    "text": "And here are our results\nfrom the GloVe model.",
+    "start": 3163.18,
+    "duration": 3.03
+  },
+  {
+    "text": "And of course, at the time 2014,\nwe took this as absolute proof",
+    "start": 3166.21,
+    "duration": 5.82
+  },
+  {
+    "text": "that our model was better\nand a more efficient use",
+    "start": 3172.03,
+    "duration": 3.84
+  },
+  {
+    "text": "of statistics was really\nworking in our favor.",
+    "start": 3175.87,
+    "duration": 3.99
+  },
+  {
+    "text": "With seven years of retrospect,\nI think that's not really true,",
+    "start": 3179.86,
+    "duration": 4.11
+  },
+  {
+    "text": "it turns out.",
+    "start": 3183.97,
+    "duration": 1.02
+  },
+  {
+    "text": "I think the main part\nof why we scored better",
+    "start": 3184.99,
+    "duration": 3.33
+  },
+  {
+    "text": "is that we actually\nhad better data.",
+    "start": 3188.32,
+    "duration": 2.34
+  },
+  {
+    "text": "And so there's a bit of evidence\nabout that on this next slide",
+    "start": 3190.66,
+    "duration": 4.35
+  },
+  {
+    "text": "here.",
+    "start": 3195.01,
+    "duration": 0.88
+  },
+  {
+    "text": "So this looks at the semantic,\nsyntactic and overall",
+    "start": 3195.89,
+    "duration": 4.55
+  },
+  {
+    "text": "performance on word\nanalogies of GloVe models",
+    "start": 3200.44,
+    "duration": 4.53
+  },
+  {
+    "text": "that were trained on\ndifferent subsets of data.",
+    "start": 3204.97,
+    "duration": 3.85
+  },
+  {
+    "text": "So in particular, the two on the\nleft are trained on Wikipedia.",
+    "start": 3208.82,
+    "duration": 5.57
+  },
+  {
+    "text": "And you can see that\ntraining on Wikipedia",
+    "start": 3214.39,
+    "duration": 2.49
+  },
+  {
+    "text": "makes you do really well on\nsemantic analogies, which maybe",
+    "start": 3216.88,
+    "duration": 4.38
+  },
+  {
+    "text": "makes sense because\nWikipedia just tells you",
+    "start": 3221.26,
+    "duration": 2.31
+  },
+  {
+    "text": "a lot of semantic facts.",
+    "start": 3223.57,
+    "duration": 1.14
+  },
+  {
+    "text": "I mean that's kind of\nwhat encyclopedias do.",
+    "start": 3224.71,
+    "duration": 3.43
+  },
+  {
+    "text": "And so one of the big\nadvantages we actually had",
+    "start": 3228.14,
+    "duration": 3.71
+  },
+  {
+    "text": "was that Wikipedia--",
+    "start": 3231.85,
+    "duration": 2.43
+  },
+  {
+    "text": "that the GloVe model was partly\ntrained on Wikipedia as well",
+    "start": 3234.28,
+    "duration": 3.99
+  },
+  {
+    "text": "as other text.",
+    "start": 3238.27,
+    "duration": 1.17
+  },
+  {
+    "text": "Whereas the word2vec\nmodel that was released",
+    "start": 3239.44,
+    "duration": 2.52
+  },
+  {
+    "text": "was trained exclusively\non Google News.",
+    "start": 3241.96,
+    "duration": 2.37
+  },
+  {
+    "text": "So news wire data.",
+    "start": 3244.33,
+    "duration": 1.59
+  },
+  {
+    "text": "And if you only train on a\nsmallish amount of news wire",
+    "start": 3245.92,
+    "duration": 5.1
+  },
+  {
+    "text": "data, you can see\nthat for the semantics",
+    "start": 3251.02,
+    "duration": 3.12
+  },
+  {
+    "text": "it's just not as good as\neven one quarter of the size",
+    "start": 3254.14,
+    "duration": 4.83
+  },
+  {
+    "text": "amount of Wikipedia data.",
+    "start": 3258.97,
+    "duration": 2.97
+  },
+  {
+    "text": "Though if you get a lot of data\nyou can compensate for that.",
+    "start": 3261.94,
+    "duration": 3.22
+  },
+  {
+    "text": "So here on the right\nend, if you then",
+    "start": 3265.16,
+    "duration": 2.57
+  },
+  {
+    "text": "have Common Crawl Web data.",
+    "start": 3267.73,
+    "duration": 2.1
+  },
+  {
+    "text": "And so once there's a lot of web\ndata, so now 42 billion words,",
+    "start": 3269.83,
+    "duration": 4.65
+  },
+  {
+    "text": "you're then starting to\nget good scores again",
+    "start": 3274.48,
+    "duration": 2.04
+  },
+  {
+    "text": "from the semantic side.",
+    "start": 3276.52,
+    "duration": 3.28
+  },
+  {
+    "text": "The graph on the\nright then shows",
+    "start": 3279.8,
+    "duration": 2.85
+  },
+  {
+    "text": "how well do you do as you\nincrease the vector dimension.",
+    "start": 3282.65,
+    "duration": 4.38
+  },
+  {
+    "text": "And so what you can see there\nis 25 dimensional vectors",
+    "start": 3287.03,
+    "duration": 4.74
+  },
+  {
+    "text": "aren't very good.",
+    "start": 3291.77,
+    "duration": 1.44
+  },
+  {
+    "text": "They go up to sort\nof 50 and then 100.",
+    "start": 3293.21,
+    "duration": 3.12
+  },
+  {
+    "text": "And so 100 dimensional vectors\nalready work reasonably well.",
+    "start": 3296.33,
+    "duration": 3.7
+  },
+  {
+    "text": "So that's why I used 100\ndimensional vectors when",
+    "start": 3300.03,
+    "duration": 2.63
+  },
+  {
+    "text": "I showed my example in class.",
+    "start": 3302.66,
+    "duration": 2.35
+  },
+  {
+    "text": "[AUDIO OUT] and working\nreasonably well.",
+    "start": 3305.01,
+    "duration": 6.71
+  },
+  {
+    "text": "But you still get\nsignificant gains",
+    "start": 3311.72,
+    "duration": 1.62
+  },
+  {
+    "text": "for 200 and somewhat to 300.",
+    "start": 3313.34,
+    "duration": 2.77
+  },
+  {
+    "text": "So at least back around\nsort of 2013 to 2015,",
+    "start": 3316.11,
+    "duration": 3.39
+  },
+  {
+    "text": "everyone sort of\ngravitated to the fact",
+    "start": 3319.5,
+    "duration": 2.3
+  },
+  {
+    "text": "that 300 dimensional\nvectors is the sweet spot.",
+    "start": 3321.8,
+    "duration": 3.58
+  },
+  {
+    "text": "So almost freakily, if you look\nthrough the best known sets",
+    "start": 3325.38,
+    "duration": 3.44
+  },
+  {
+    "text": "of word vectors that include the\nword2vec vectors and the GloVe",
+    "start": 3328.82,
+    "duration": 3.9
+  },
+  {
+    "text": "vectors that\nusually what you get",
+    "start": 3332.72,
+    "duration": 2.52
+  },
+  {
+    "text": "is 300 dimensional word vectors.",
+    "start": 3335.24,
+    "duration": 1.86
+  },
+  {
+    "text": "That's not the only intrinsic\nevaluation you can do.",
+    "start": 3339.72,
+    "duration": 3.61
+  },
+  {
+    "text": "Another intrinsic\nevaluation you can do",
+    "start": 3343.33,
+    "duration": 2.3
+  },
+  {
+    "text": "is see how these models\nmodel human judgments of word",
+    "start": 3345.63,
+    "duration": 5.52
+  },
+  {
+    "text": "similarity.",
+    "start": 3351.15,
+    "duration": 1.56
+  },
+  {
+    "text": "So psychologists\nfor several decades",
+    "start": 3352.71,
+    "duration": 3.03
+  },
+  {
+    "text": "have actually taken human\njudgments of word similarity.",
+    "start": 3355.74,
+    "duration": 4.92
+  },
+  {
+    "text": "Where literally you're asking\npeople for pairs of words",
+    "start": 3360.66,
+    "duration": 4.53
+  },
+  {
+    "text": "like \"professor\" and \"doctor\"\nto give them a similarity",
+    "start": 3365.19,
+    "duration": 3.12
+  },
+  {
+    "text": "score that's being measured as\nsome continuous quantity giving",
+    "start": 3368.31,
+    "duration": 4.35
+  },
+  {
+    "text": "you a score between,\nsay 0 and 10.",
+    "start": 3372.66,
+    "duration": 3.69
+  },
+  {
+    "text": "And so there are\nhuman judgments,",
+    "start": 3376.35,
+    "duration": 2.35
+  },
+  {
+    "text": "which are then averaged over\nmultiple human judgments",
+    "start": 3378.7,
+    "duration": 2.66
+  },
+  {
+    "text": "as to how similar\ndifferent words are.",
+    "start": 3381.36,
+    "duration": 2.55
+  },
+  {
+    "text": "So \"tiger\" and \"cat\"\nis pretty similar.",
+    "start": 3383.91,
+    "duration": 2.82
+  },
+  {
+    "text": "\"Computer and \"internet\"\nis pretty similar.",
+    "start": 3386.73,
+    "duration": 2.25
+  },
+  {
+    "text": "\"Plane and \"cars\" less similar.",
+    "start": 3388.98,
+    "duration": 2.19
+  },
+  {
+    "text": "\"Stock\" and \"CD\" aren't\nvery similar at all",
+    "start": 3391.17,
+    "duration": 2.91
+  },
+  {
+    "text": "but \"stock\" and \"jaguar\"\nare even less similar.",
+    "start": 3394.08,
+    "duration": 4.42
+  },
+  {
+    "text": "So we could then\nsay for our models,",
+    "start": 3398.5,
+    "duration": 4.1
+  },
+  {
+    "text": "do they have the same\nsimilarity judgments.",
+    "start": 3402.6,
+    "duration": 3.52
+  },
+  {
+    "text": "And in particular, we\ncan measure a correlation",
+    "start": 3406.12,
+    "duration": 3.08
+  },
+  {
+    "text": "coefficient of whether they give\nthe same ordering of similarity",
+    "start": 3409.2,
+    "duration": 3.87
+  },
+  {
+    "text": "judgments.",
+    "start": 3413.07,
+    "duration": 0.99
+  },
+  {
+    "text": "And so then we can\nget data for that.",
+    "start": 3414.06,
+    "duration": 2.86
+  },
+  {
+    "text": "And so there are various\ndifferent data sets",
+    "start": 3416.92,
+    "duration": 2.33
+  },
+  {
+    "text": "of word similarities.",
+    "start": 3419.25,
+    "duration": 1.8
+  },
+  {
+    "text": "And we can score\ndifferent models",
+    "start": 3421.05,
+    "duration": 1.8
+  },
+  {
+    "text": "as to how well they\ndo on similarities.",
+    "start": 3422.85,
+    "duration": 3.03
+  },
+  {
+    "text": "And again, you see\nhere that plain SVD's",
+    "start": 3425.88,
+    "duration": 4.95
+  },
+  {
+    "text": "works comparatively better\nhere for similarities",
+    "start": 3430.83,
+    "duration": 4.08
+  },
+  {
+    "text": "than it did for analogies.",
+    "start": 3434.91,
+    "duration": 1.47
+  },
+  {
+    "text": "It's not great but it's\nnot completely terrible",
+    "start": 3436.38,
+    "duration": 2.88
+  },
+  {
+    "text": "because we no longer need\nthat linear property.",
+    "start": 3439.26,
+    "duration": 2.58
+  },
+  {
+    "text": "But again, scaled SVD's\nwork a lot better.",
+    "start": 3441.84,
+    "duration": 3.96
+  },
+  {
+    "text": "Word2vec works a bit\nbetter than that.",
+    "start": 3445.8,
+    "duration": 2.77
+  },
+  {
+    "text": "And we got some of the same\nkind of minor advantages",
+    "start": 3448.57,
+    "duration": 2.93
+  },
+  {
+    "text": "from the GloVe model.",
+    "start": 3451.5,
+    "duration": 2.83
+  },
+  {
+    "text": "Sorry to interrupt.",
+    "start": 3454.33,
+    "duration": 0.93
+  },
+  {
+    "text": "A lot of those students who are\nasking if you could re-explain",
+    "start": 3455.26,
+    "duration": 3.13
+  },
+  {
+    "text": "the objective function for\nthe GloVe model and also",
+    "start": 3458.39,
+    "duration": 3.2
+  },
+  {
+    "text": "what log-bilinear means.",
+    "start": 3461.59,
+    "duration": 3.58
+  },
+  {
+    "text": "OK.",
+    "start": 3465.17,
+    "duration": 2.1
+  },
+  {
+    "text": "Sure, OK, here is my\nobjective function.",
+    "start": 3467.27,
+    "duration": 9.6
+  },
+  {
+    "text": "All right, if I go one\nslide before that--",
+    "start": 3476.87,
+    "duration": 3.36
+  },
+  {
+    "text": "right, so the\nproperty that we want",
+    "start": 3480.23,
+    "duration": 4.26
+  },
+  {
+    "text": "is that we want the dot\nproduct to represent the log",
+    "start": 3484.49,
+    "duration": 6.81
+  },
+  {
+    "text": "probability of co-occurrence.",
+    "start": 3491.3,
+    "duration": 3.03
+  },
+  {
+    "text": "So that then gives me\nmy tricky log-bilinear.",
+    "start": 3494.33,
+    "duration": 5.7
+  },
+  {
+    "text": "So the \"bi\" is that\nthere's the wy and the wj",
+    "start": 3500.03,
+    "duration": 4.2
+  },
+  {
+    "text": "so that there are\ntwo linear things.",
+    "start": 3504.23,
+    "duration": 4.53
+  },
+  {
+    "text": "And it's linear in\neach one of them.",
+    "start": 3508.76,
+    "duration": 1.92
+  },
+  {
+    "text": "So this is sort of\nlike having and--",
+    "start": 3510.68,
+    "duration": 3.24
+  },
+  {
+    "text": "rather than having\na sort of an ax",
+    "start": 3513.92,
+    "duration": 2.97
+  },
+  {
+    "text": "where you just have\nsomething that's",
+    "start": 3516.89,
+    "duration": 1.5
+  },
+  {
+    "text": "linear in x and is a constant.",
+    "start": 3518.39,
+    "duration": 3.25
+  },
+  {
+    "text": "It's bi-linear because\nwe have the wy, wj",
+    "start": 3521.64,
+    "duration": 3.71
+  },
+  {
+    "text": "and it's linear in both of them.",
+    "start": 3525.35,
+    "duration": 2.19
+  },
+  {
+    "text": "And that's then related to\nthe log of a probability.",
+    "start": 3527.54,
+    "duration": 3.55
+  },
+  {
+    "text": "And so that gives us\nthe log-bilinear model.",
+    "start": 3531.09,
+    "duration": 2.435
+  },
+  {
+    "text": "And so since we'd like\nthese things to be equal,",
+    "start": 3536.83,
+    "duration": 6.51
+  },
+  {
+    "text": "what we're doing here, if\nyou ignore these two center",
+    "start": 3543.34,
+    "duration": 3.09
+  },
+  {
+    "text": "terms is that we're\nwanting to say",
+    "start": 3546.43,
+    "duration": 2.52
+  },
+  {
+    "text": "the difference between these\ntwo is as small as possible.",
+    "start": 3548.95,
+    "duration": 5.95
+  },
+  {
+    "text": "So we're taking this difference\nand we're squaring it",
+    "start": 3554.9,
+    "duration": 2.76
+  },
+  {
+    "text": "so it's always positive.",
+    "start": 3557.66,
+    "duration": 1.43
+  },
+  {
+    "text": "And we want that squared term\nto be as small as possible.",
+    "start": 3559.09,
+    "duration": 5.61
+  },
+  {
+    "text": "And that's 90% of it.",
+    "start": 3564.7,
+    "duration": 3.09
+  },
+  {
+    "text": "And you can\nbasically stop there.",
+    "start": 3567.79,
+    "duration": 1.98
+  },
+  {
+    "text": "But the other bit\nthat's in here,",
+    "start": 3569.77,
+    "duration": 2.7
+  },
+  {
+    "text": "is a lot of the time when\nyou're building models",
+    "start": 3572.47,
+    "duration": 5.22
+  },
+  {
+    "text": "rather than simply having\nsort of an ax model,",
+    "start": 3577.69,
+    "duration": 4.32
+  },
+  {
+    "text": "it seems useful to\nhave a bias term which",
+    "start": 3582.01,
+    "duration": 3.3
+  },
+  {
+    "text": "can move things up and down\nfor the word in general.",
+    "start": 3585.31,
+    "duration": 5.71
+  },
+  {
+    "text": "And so we added into\nthe model bias term",
+    "start": 3591.02,
+    "duration": 2.7
+  },
+  {
+    "text": "so that there's a bias\nterm for both words.",
+    "start": 3593.72,
+    "duration": 3.23
+  },
+  {
+    "text": "So if in general probabilities\nare high for a certain word,",
+    "start": 3596.95,
+    "duration": 4.14
+  },
+  {
+    "text": "this bias term can model that.",
+    "start": 3601.09,
+    "duration": 2.13
+  },
+  {
+    "text": "And for the other word this\nbias term can model it, okay?",
+    "start": 3603.22,
+    "duration": 5.61
+  },
+  {
+    "text": "So now I'll pop back and after--",
+    "start": 3608.83,
+    "duration": 4.7
+  },
+  {
+    "text": "oh actually I just\nsaw someone said",
+    "start": 3613.53,
+    "duration": 2.32
+  },
+  {
+    "text": "why multiplying by the f of--",
+    "start": 3615.85,
+    "duration": 3.69
+  },
+  {
+    "text": "sorry I did skip that last term.",
+    "start": 3619.54,
+    "duration": 4.16
+  },
+  {
+    "text": "OK, the y modifying\nby this f of xij.",
+    "start": 3623.7,
+    "duration": 4.02
+  },
+  {
+    "text": "So this last bit\nwas to scale things",
+    "start": 3627.72,
+    "duration": 6.33
+  },
+  {
+    "text": "depending on the\nfrequency of a word",
+    "start": 3634.05,
+    "duration": 4.11
+  },
+  {
+    "text": "because you want to pay\nmore attention to words",
+    "start": 3638.16,
+    "duration": 7.08
+  },
+  {
+    "text": "that are more common or word\npairs that are more common.",
+    "start": 3645.24,
+    "duration": 4.11
+  },
+  {
+    "text": "Because if you think about\nit in word2vec terms,",
+    "start": 3649.35,
+    "duration": 4.38
+  },
+  {
+    "text": "you're seeing if things have\na co-occurrence count of 50",
+    "start": 3653.73,
+    "duration": 4.41
+  },
+  {
+    "text": "versus three.",
+    "start": 3658.14,
+    "duration": 2.67
+  },
+  {
+    "text": "You want to do a\nbetter job at modeling",
+    "start": 3660.81,
+    "duration": 3.06
+  },
+  {
+    "text": "the co-occurrence of the\nthings that occurred together",
+    "start": 3663.87,
+    "duration": 4.52
+  },
+  {
+    "text": "50 times.",
+    "start": 3668.39,
+    "duration": 2.79
+  },
+  {
+    "text": "And so you want to consider\nin the count of co-occurrence.",
+    "start": 3671.18,
+    "duration": 4.98
+  },
+  {
+    "text": "But then the argument is that\nthat actually leads you astray",
+    "start": 3676.16,
+    "duration": 4.38
+  },
+  {
+    "text": "when you have extremely common\nwords like function words.",
+    "start": 3680.54,
+    "duration": 3.45
+  },
+  {
+    "text": "And so effectively you\npaid more attention",
+    "start": 3683.99,
+    "duration": 4.14
+  },
+  {
+    "text": "to words that\nco-occurred together up",
+    "start": 3688.13,
+    "duration": 3.36
+  },
+  {
+    "text": "until a certain point.",
+    "start": 3691.49,
+    "duration": 1.66
+  },
+  {
+    "text": "And then the curve\njust went flat,",
+    "start": 3693.15,
+    "duration": 2.12
+  },
+  {
+    "text": "so it didn't matter if it\nwas an extremely, extremely",
+    "start": 3695.27,
+    "duration": 2.43
+  },
+  {
+    "text": "common word.",
+    "start": 3697.7,
+    "duration": 1.23
+  },
+  {
+    "text": "So then for extrinsic\nword vector evaluation.",
+    "start": 3698.93,
+    "duration": 6.48
+  },
+  {
+    "text": "So at this point you're now\nwanting to sort of say, well,",
+    "start": 3705.41,
+    "duration": 4.36
+  },
+  {
+    "text": "can we embed our word\nvectors in some end-user task",
+    "start": 3709.77,
+    "duration": 4.94
+  },
+  {
+    "text": "and do they help?",
+    "start": 3714.71,
+    "duration": 3.06
+  },
+  {
+    "text": "And do different word\nvectors work better or worse",
+    "start": 3717.77,
+    "duration": 3.24
+  },
+  {
+    "text": "than other word vectors?",
+    "start": 3721.01,
+    "duration": 2.38
+  },
+  {
+    "text": "So this is something that\nwe'll see a lot of later",
+    "start": 3723.39,
+    "duration": 2.84
+  },
+  {
+    "text": "in the class.",
+    "start": 3726.23,
+    "duration": 1.12
+  },
+  {
+    "text": "I mean, in particular\nwhen you get on",
+    "start": 3727.35,
+    "duration": 3.17
+  },
+  {
+    "text": "to doing assignment three.",
+    "start": 3730.52,
+    "duration": 1.53
+  },
+  {
+    "text": "That assignment three you get\nto build dependency parsers",
+    "start": 3732.05,
+    "duration": 3.84
+  },
+  {
+    "text": "and you can then\nuse word vectors",
+    "start": 3735.89,
+    "duration": 3.32
+  },
+  {
+    "text": "in the dependency parser\nand see how much they help.",
+    "start": 3739.21,
+    "duration": 3.3
+  },
+  {
+    "text": "We don't actually make you\ntest out different sets of word",
+    "start": 3742.51,
+    "duration": 2.49
+  },
+  {
+    "text": "vectors, but you could.",
+    "start": 3745.0,
+    "duration": 3.38
+  },
+  {
+    "text": "Here's just one example of\nthis to give you a sense.",
+    "start": 3748.38,
+    "duration": 3.1
+  },
+  {
+    "text": "So the task of named\nentity recognition",
+    "start": 3751.48,
+    "duration": 2.54
+  },
+  {
+    "text": "is going through a piece\nof text and identifying",
+    "start": 3754.02,
+    "duration": 3.54
+  },
+  {
+    "text": "mentions of a person's name\nor an organization name",
+    "start": 3757.56,
+    "duration": 3.27
+  },
+  {
+    "text": "like a company or a location.",
+    "start": 3760.83,
+    "duration": 2.98
+  },
+  {
+    "text": "And so if you have\ngood word vectors,",
+    "start": 3763.81,
+    "duration": 5.57
+  },
+  {
+    "text": "do they help you do named\nentity recognition better?",
+    "start": 3769.38,
+    "duration": 3.61
+  },
+  {
+    "text": "And the answer to that is yes.",
+    "start": 3772.99,
+    "duration": 1.98
+  },
+  {
+    "text": "So if one starts off\nwith a model that simply",
+    "start": 3774.97,
+    "duration": 3.29
+  },
+  {
+    "text": "has discrete features, so it\nuses word identity as features,",
+    "start": 3778.26,
+    "duration": 5.16
+  },
+  {
+    "text": "you can build a pretty good\nnamed entity model doing that.",
+    "start": 3783.42,
+    "duration": 3.1
+  },
+  {
+    "text": "But if you add into\nit word vectors",
+    "start": 3786.52,
+    "duration": 2.51
+  },
+  {
+    "text": "you get a better representation\nof the meaning of words.",
+    "start": 3789.03,
+    "duration": 3.48
+  },
+  {
+    "text": "And so that you can have the\nnumbers go up quite a bit.",
+    "start": 3792.51,
+    "duration": 3.97
+  },
+  {
+    "text": "And then you can\ncompare different models",
+    "start": 3796.48,
+    "duration": 2.48
+  },
+  {
+    "text": "to see how much gain\nthey give you in terms",
+    "start": 3798.96,
+    "duration": 2.97
+  },
+  {
+    "text": "of this extrinsic task.",
+    "start": 3801.93,
+    "duration": 2.67
+  },
+  {
+    "text": "So skipping ahead,\nthis was a question",
+    "start": 3804.6,
+    "duration": 3.12
+  },
+  {
+    "text": "that was asked after class,\nwhich was word senses.",
+    "start": 3807.72,
+    "duration": 5.1
+  },
+  {
+    "text": "Because so far we've had\njust one particular string,",
+    "start": 3812.82,
+    "duration": 9.72
+  },
+  {
+    "text": "we've got some string house.",
+    "start": 3822.54,
+    "duration": 2.22
+  },
+  {
+    "text": "And we're going to say for\neach of those strings there's",
+    "start": 3824.76,
+    "duration": 3.12
+  },
+  {
+    "text": "a word vector.",
+    "start": 3827.88,
+    "duration": 1.57
+  },
+  {
+    "text": "And if you think\nabout it a bit more,",
+    "start": 3829.45,
+    "duration": 2.93
+  },
+  {
+    "text": "that seems like it's very weird.",
+    "start": 3832.38,
+    "duration": 3.87
+  },
+  {
+    "text": "Because actually most words,\nespecially common words,",
+    "start": 3836.25,
+    "duration": 4.88
+  },
+  {
+    "text": "and especially words that\nhave existed for a long time",
+    "start": 3841.13,
+    "duration": 3.37
+  },
+  {
+    "text": "actually have many meanings\nwhich are very different.",
+    "start": 3844.5,
+    "duration": 3.79
+  },
+  {
+    "text": "So how could that be\ncaptured if you only have",
+    "start": 3848.29,
+    "duration": 2.18
+  },
+  {
+    "text": "one word vector for the word?",
+    "start": 3850.47,
+    "duration": 2.01
+  },
+  {
+    "text": "Because you can't\nactually capture the fact",
+    "start": 3852.48,
+    "duration": 2.43
+  },
+  {
+    "text": "that you've got different\nmeanings for the word.",
+    "start": 3854.91,
+    "duration": 2.435
+  },
+  {
+    "text": "Because your\nmeaning for the word",
+    "start": 3857.345,
+    "duration": 1.375
+  },
+  {
+    "text": "is just one point in\nspace, one vector.",
+    "start": 3858.72,
+    "duration": 3.24
+  },
+  {
+    "text": "And so as an example of\nthat, here's the word \"pike\".",
+    "start": 3861.96,
+    "duration": 4.444
+  },
+  {
+    "text": "Now it's actually\na very common word",
+    "start": 3866.404,
+    "duration": 4.076
+  },
+  {
+    "text": "but it is an old Germanic word.",
+    "start": 3870.48,
+    "duration": 2.16
+  },
+  {
+    "text": "Well, what kind of meanings\ndoes the word \"pike\" have?",
+    "start": 3872.64,
+    "duration": 3.78
+  },
+  {
+    "text": "So you can maybe just\nthink for a minute",
+    "start": 3876.42,
+    "duration": 2.37
+  },
+  {
+    "text": "and think what word meanings\nthe word \"pike\" has.",
+    "start": 3878.79,
+    "duration": 7.79
+  },
+  {
+    "text": "And it actually turns out it\nhas a lot of different meanings.",
+    "start": 3886.58,
+    "duration": 3.02
+  },
+  {
+    "text": "So perhaps the\nmost basic meaning",
+    "start": 3889.6,
+    "duration": 3.52
+  },
+  {
+    "text": "is if you did fantasy games or\nsomething, medieval weapons,",
+    "start": 3893.12,
+    "duration": 6.06
+  },
+  {
+    "text": "a sharp pointed staff is a pike.",
+    "start": 3899.18,
+    "duration": 3.12
+  },
+  {
+    "text": "But there's a kind\nof a fish that",
+    "start": 3902.3,
+    "duration": 1.41
+  },
+  {
+    "text": "has a similar elongated\nshape that's a pike.",
+    "start": 3903.71,
+    "duration": 4.23
+  },
+  {
+    "text": "It was used for railroad lines.",
+    "start": 3907.94,
+    "duration": 4.17
+  },
+  {
+    "text": "Maybe that usage isn't\nused much anymore.",
+    "start": 3912.11,
+    "duration": 2.13
+  },
+  {
+    "text": "But it's certainly still\nsurvives in referring to roads.",
+    "start": 3914.24,
+    "duration": 3.65
+  },
+  {
+    "text": "So this is like when\nyou have turnpikes.",
+    "start": 3917.89,
+    "duration": 2.41
+  },
+  {
+    "text": "We have expressions where\n\"pike\" means the future,",
+    "start": 3920.3,
+    "duration": 2.82
+  },
+  {
+    "text": "like coming down the pike.",
+    "start": 3923.12,
+    "duration": 2.4
+  },
+  {
+    "text": "It's a position in diving,\nthat divers do a pike.",
+    "start": 3925.52,
+    "duration": 4.65
+  },
+  {
+    "text": "Those are all noun uses.",
+    "start": 3930.17,
+    "duration": 2.25
+  },
+  {
+    "text": "There are also verbal uses.",
+    "start": 3932.42,
+    "duration": 1.62
+  },
+  {
+    "text": "So you can pike\nsomebody with your pike.",
+    "start": 3934.04,
+    "duration": 3.69
+  },
+  {
+    "text": "Different usages might\nhave different currency.",
+    "start": 3937.73,
+    "duration": 3.78
+  },
+  {
+    "text": "In Australia you can\nalso use \"pike\" to mean",
+    "start": 3941.51,
+    "duration": 2.82
+  },
+  {
+    "text": "that you pull out\nof doing something,",
+    "start": 3944.33,
+    "duration": 1.68
+  },
+  {
+    "text": "like I reckon he's\ngoing to pike.",
+    "start": 3946.01,
+    "duration": 3.34
+  },
+  {
+    "text": "I don't think that usage\nis used in America.",
+    "start": 3949.35,
+    "duration": 2.01
+  },
+  {
+    "text": "But lots of meanings.",
+    "start": 3951.36,
+    "duration": 1.2
+  },
+  {
+    "text": "And actually for\nwords that are common",
+    "start": 3952.56,
+    "duration": 1.71
+  },
+  {
+    "text": "or if you start thinking of\nwords like \"line\" or \"field\",",
+    "start": 3954.27,
+    "duration": 3.42
+  },
+  {
+    "text": "I mean they just have even\nmore meanings than this.",
+    "start": 3957.69,
+    "duration": 2.73
+  },
+  {
+    "text": "So what are we actually\ndoing with just one",
+    "start": 3960.42,
+    "duration": 3.21
+  },
+  {
+    "text": "vector for a word?",
+    "start": 3963.63,
+    "duration": 1.98
+  },
+  {
+    "text": "And well, one way\nyou could go is",
+    "start": 3965.61,
+    "duration": 3.15
+  },
+  {
+    "text": "to say OK, up until now\nwhat we've done is crazy.",
+    "start": 3968.76,
+    "duration": 3.78
+  },
+  {
+    "text": "\"Pike\" has, and\nother words have all",
+    "start": 3972.54,
+    "duration": 2.16
+  },
+  {
+    "text": "of these different meanings.",
+    "start": 3974.7,
+    "duration": 1.9
+  },
+  {
+    "text": "So maybe what we should do is\nhave a different word vectors",
+    "start": 3976.6,
+    "duration": 4.61
+  },
+  {
+    "text": "for the different\nmeanings of \"pike\".",
+    "start": 3981.21,
+    "duration": 1.92
+  },
+  {
+    "text": "So we'd have one word vector\nfor the medieval pointy weapon.",
+    "start": 3983.13,
+    "duration": 5.53
+  },
+  {
+    "text": "Another word vector\nfor the kind of fish.",
+    "start": 3988.66,
+    "duration": 3.29
+  },
+  {
+    "text": "Another word vector\nfor the kind of road.",
+    "start": 3991.95,
+    "duration": 2.35
+  },
+  {
+    "text": "So that there'd then\nbe word sense vectors.",
+    "start": 3994.3,
+    "duration": 2.405
+  },
+  {
+    "text": "And you can do that.",
+    "start": 3999.3,
+    "duration": 1.23
+  },
+  {
+    "text": "I mean actually, we were working\non that in the early 2010s,",
+    "start": 4000.53,
+    "duration": 6.42
+  },
+  {
+    "text": "actually even before\nword2vec came out.",
+    "start": 4006.95,
+    "duration": 3.67
+  },
+  {
+    "text": "So this picture is a\nlittle bit small to see.",
+    "start": 4010.62,
+    "duration": 4.37
+  },
+  {
+    "text": "But what we were\ndoing was for words,",
+    "start": 4014.99,
+    "duration": 3.54
+  },
+  {
+    "text": "we were clustering\ninstances of a word hoping",
+    "start": 4018.53,
+    "duration": 4.38
+  },
+  {
+    "text": "that those clusters--",
+    "start": 4022.91,
+    "duration": 2.01
+  },
+  {
+    "text": "clustering the word tokens,\nhoping those clusters",
+    "start": 4024.92,
+    "duration": 3.15
+  },
+  {
+    "text": "have similar represented senses.",
+    "start": 4028.07,
+    "duration": 2.46
+  },
+  {
+    "text": "And then for the\nclusters of word tokens,",
+    "start": 4030.53,
+    "duration": 2.625
+  },
+  {
+    "text": "we were also treating them\nlike they were separate words.",
+    "start": 4033.155,
+    "duration": 3.535
+  },
+  {
+    "text": "And learning a word\nvector for each.",
+    "start": 4036.69,
+    "duration": 2.15
+  },
+  {
+    "text": "And basically that\nactually works.",
+    "start": 4038.84,
+    "duration": 3.06
+  },
+  {
+    "text": "So in green we have two\nsenses for the word \"bank\".",
+    "start": 4041.9,
+    "duration": 4.11
+  },
+  {
+    "text": "And so there's one sense for the\nword \"bank\" that's over here,",
+    "start": 4046.01,
+    "duration": 3.15
+  },
+  {
+    "text": "where it's close to words\nlike \"banking\", \"finance\",",
+    "start": 4049.16,
+    "duration": 2.88
+  },
+  {
+    "text": "\"transaction\", and \"laundering\".",
+    "start": 4052.04,
+    "duration": 1.8
+  },
+  {
+    "text": "And then we have another sense\nfor the word \"bank\" over here,",
+    "start": 4053.84,
+    "duration": 3.24
+  },
+  {
+    "text": "where it's close to words like\n\"plateau\", \"boundary\", \"gap",
+    "start": 4057.08,
+    "duration": 2.94
+  },
+  {
+    "text": "territory\", which is the river\nbank sense of the word \"bank\".",
+    "start": 4060.02,
+    "duration": 4.59
+  },
+  {
+    "text": "And for the word \"jaguar\"\nthat's in purple.",
+    "start": 4064.61,
+    "duration": 4.55
+  },
+  {
+    "text": "Well, \"jaguar\" has\na number of senses",
+    "start": 4069.16,
+    "duration": 2.14
+  },
+  {
+    "text": "and so we have those as well.",
+    "start": 4071.3,
+    "duration": 2.29
+  },
+  {
+    "text": "So this sense down here\nis close to \"hunter\"",
+    "start": 4073.59,
+    "duration": 3.41
+  },
+  {
+    "text": "so that's the big game\nanimals sense of \"jaguar\".",
+    "start": 4077.0,
+    "duration": 4.17
+  },
+  {
+    "text": "Up the top here it's\nbeing shown close",
+    "start": 4081.17,
+    "duration": 2.46
+  },
+  {
+    "text": "to \"luxury\" and \"convertibles\",\nThis is the Jaguar car sense.",
+    "start": 4083.63,
+    "duration": 4.71
+  },
+  {
+    "text": "Then \"jaguar\" here is near\n\"string\", \"keyboard\" and words",
+    "start": 4088.34,
+    "duration": 4.59
+  },
+  {
+    "text": "like that.",
+    "start": 4092.93,
+    "duration": 0.57
+  },
+  {
+    "text": "So jaguar's the name\nof a kind of keyboard.",
+    "start": 4093.5,
+    "duration": 4.29
+  },
+  {
+    "text": "And then this final\n\"jaguar\" over here",
+    "start": 4097.79,
+    "duration": 2.279
+  },
+  {
+    "text": "is close to \"software\"\nand \"Microsoft\".",
+    "start": 4100.069,
+    "duration": 3.091
+  },
+  {
+    "text": "And then if you're\nold enough, you'll",
+    "start": 4103.16,
+    "duration": 2.01
+  },
+  {
+    "text": "remember that there was an\nold version of Mac OS that",
+    "start": 4105.17,
+    "duration": 2.55
+  },
+  {
+    "text": "was called Jaguar.",
+    "start": 4107.72,
+    "duration": 1.349
+  },
+  {
+    "text": "So that's then the\ncomputer sense.",
+    "start": 4109.069,
+    "duration": 2.051
+  },
+  {
+    "text": "So basically this does work\nand we can learn word vectors",
+    "start": 4111.12,
+    "duration": 4.67
+  },
+  {
+    "text": "for different senses of a word.",
+    "start": 4115.79,
+    "duration": 2.55
+  },
+  {
+    "text": "But actually this\nisn't the majority way",
+    "start": 4118.34,
+    "duration": 2.67
+  },
+  {
+    "text": "that things have then\ngone in practice.",
+    "start": 4121.01,
+    "duration": 3.75
+  },
+  {
+    "text": "And there are kind of a\ncouple of reasons for that.",
+    "start": 4124.76,
+    "duration": 4.12
+  },
+  {
+    "text": "I mean one is just simplicity.",
+    "start": 4128.88,
+    "duration": 2.42
+  },
+  {
+    "text": "If you do this,\nit's kind of complex",
+    "start": 4131.3,
+    "duration": 4.559
+  },
+  {
+    "text": "because you first of all\nhave to learn word senses",
+    "start": 4135.859,
+    "duration": 2.551
+  },
+  {
+    "text": "and then start learning word\nvectors in terms of the word",
+    "start": 4138.41,
+    "duration": 2.489
+  },
+  {
+    "text": "senses But the other reason is\nalthough this model of having",
+    "start": 4140.899,
+    "duration": 5.161
+  },
+  {
+    "text": "word senses is traditional.",
+    "start": 4146.06,
+    "duration": 3.9
+  },
+  {
+    "text": "It's what you see\nin dictionaries.",
+    "start": 4149.96,
+    "duration": 1.74
+  },
+  {
+    "text": "It's commonly what's been used\nin natural language processing.",
+    "start": 4151.7,
+    "duration": 3.97
+  },
+  {
+    "text": "I mean it tends to be\nimperfect in its own way",
+    "start": 4155.67,
+    "duration": 3.32
+  },
+  {
+    "text": "because we're trying to take\nall the uses of the word \"pike\"",
+    "start": 4158.99,
+    "duration": 3.03
+  },
+  {
+    "text": "and sort of cut them up\ninto key different senses.",
+    "start": 4162.02,
+    "duration": 3.54
+  },
+  {
+    "text": "Where [AUDIO OUT] differences\nkind of overlapping and it's",
+    "start": 4165.56,
+    "duration": 6.93
+  },
+  {
+    "text": "often not clear which\nones to count as distinct.",
+    "start": 4172.49,
+    "duration": 2.46
+  },
+  {
+    "text": "So for example here,\nright, a railroad line",
+    "start": 4174.95,
+    "duration": 2.88
+  },
+  {
+    "text": "and a type of road,\nwell sort of that's",
+    "start": 4177.83,
+    "duration": 1.8
+  },
+  {
+    "text": "the same sense of \"pike\".",
+    "start": 4179.63,
+    "duration": 1.62
+  },
+  {
+    "text": "It's just that they're different\nforms of transportation.",
+    "start": 4181.25,
+    "duration": 2.58
+  },
+  {
+    "text": "And so that this could be a\ntype of transportation line",
+    "start": 4183.83,
+    "duration": 3.87
+  },
+  {
+    "text": "and cover both of them.",
+    "start": 4187.7,
+    "duration": 1.449
+  },
+  {
+    "text": "So it's always sort\nof very unclear",
+    "start": 4189.149,
+    "duration": 2.21
+  },
+  {
+    "text": "how you cut word meaning\ninto different senses.",
+    "start": 4191.359,
+    "duration": 4.439
+  },
+  {
+    "text": "And indeed, if you look\nat different dictionaries",
+    "start": 4195.798,
+    "duration": 2.042
+  },
+  {
+    "text": "everyone does it differently.",
+    "start": 4197.84,
+    "duration": 3.81
+  },
+  {
+    "text": "So it actually turns\nout that in practice you",
+    "start": 4201.65,
+    "duration": 4.88
+  },
+  {
+    "text": "can do rather well\nby simply having",
+    "start": 4206.53,
+    "duration": 4.35
+  },
+  {
+    "text": "one word vector per word type.",
+    "start": 4210.88,
+    "duration": 3.42
+  },
+  {
+    "text": "And what happens if you do that?",
+    "start": 4214.3,
+    "duration": 3.21
+  },
+  {
+    "text": "Well, what you find is that--",
+    "start": 4217.51,
+    "duration": 6.6
+  },
+  {
+    "text": "what you learn is\nthe word vector",
+    "start": 4224.11,
+    "duration": 2.55
+  },
+  {
+    "text": "is what gets referred\nto in fancy talk",
+    "start": 4226.66,
+    "duration": 3.3
+  },
+  {
+    "text": "as a superposition\nof the word vectors",
+    "start": 4229.96,
+    "duration": 6.36
+  },
+  {
+    "text": "for the different\nsenses of a word.",
+    "start": 4236.32,
+    "duration": 2.73
+  },
+  {
+    "text": "Where the word \"superposition\"\nmeans no more or less",
+    "start": 4239.05,
+    "duration": 3.54
+  },
+  {
+    "text": "than a weighted sum.",
+    "start": 4242.59,
+    "duration": 1.62
+  },
+  {
+    "text": "So the vector that\nwe learn for \"pike\"",
+    "start": 4244.21,
+    "duration": 3.3
+  },
+  {
+    "text": "will be a weighted\naverage of the vectors",
+    "start": 4247.51,
+    "duration": 2.88
+  },
+  {
+    "text": "that you would have learned\nfor the medieval weapons",
+    "start": 4250.39,
+    "duration": 2.82
+  },
+  {
+    "text": "sense, plus the fish\nsense, plus the road sense,",
+    "start": 4253.21,
+    "duration": 3.42
+  },
+  {
+    "text": "plus whatever other\nsenses that you have.",
+    "start": 4256.63,
+    "duration": 2.52
+  },
+  {
+    "text": "Where the weighting that's\ngiven to these different sense",
+    "start": 4259.15,
+    "duration": 3.39
+  },
+  {
+    "text": "vectors corresponds\nto the frequencies",
+    "start": 4262.54,
+    "duration": 3.09
+  },
+  {
+    "text": "of use of the different senses.",
+    "start": 4265.63,
+    "duration": 2.28
+  },
+  {
+    "text": "So we end up with\nthe vector for \"pike\"",
+    "start": 4267.91,
+    "duration": 6.06
+  },
+  {
+    "text": "being a kind of\nan average vector.",
+    "start": 4273.97,
+    "duration": 2.64
+  },
+  {
+    "text": "And so if you say\nOK, you've just",
+    "start": 4276.61,
+    "duration": 6.48
+  },
+  {
+    "text": "added up several different\nvectors into an average.",
+    "start": 4283.09,
+    "duration": 2.97
+  },
+  {
+    "text": "You might think\nthat that's useless",
+    "start": 4286.06,
+    "duration": 3.57
+  },
+  {
+    "text": "because you've lost the\nreal meanings of the word.",
+    "start": 4289.63,
+    "duration": 3.3
+  },
+  {
+    "text": "You've just got some kind\nof funny average vector",
+    "start": 4292.93,
+    "duration": 3.48
+  },
+  {
+    "text": "that's in between them.",
+    "start": 4296.41,
+    "duration": 2.79
+  },
+  {
+    "text": "But actually it\nturns out that if you",
+    "start": 4299.2,
+    "duration": 2.88
+  },
+  {
+    "text": "use this average\nvector in applications,",
+    "start": 4302.08,
+    "duration": 4.2
+  },
+  {
+    "text": "it tends to sort of\nself-disambiguate.",
+    "start": 4306.28,
+    "duration": 3.75
+  },
+  {
+    "text": "Because if you say is the word\n\"pike\" similar to the word",
+    "start": 4310.03,
+    "duration": 6.15
+  },
+  {
+    "text": "for \"fish\" well, part of\nthis vector represents fish,",
+    "start": 4316.18,
+    "duration": 5.04
+  },
+  {
+    "text": "the fish sense of \"pike\".",
+    "start": 4321.22,
+    "duration": 1.53
+  },
+  {
+    "text": "And so in those components,\nit will be kind of",
+    "start": 4322.75,
+    "duration": 3.0
+  },
+  {
+    "text": "similar to the fish vector.",
+    "start": 4325.75,
+    "duration": 1.71
+  },
+  {
+    "text": "And so yes you'll say there's\nsubstantial similarity.",
+    "start": 4327.46,
+    "duration": 5.98
+  },
+  {
+    "text": "Whereas if in another\npiece of text that says,",
+    "start": 4333.44,
+    "duration": 5.12
+  },
+  {
+    "text": "the men were armed with pikes,\nand lances or pikes and maces,",
+    "start": 4338.56,
+    "duration": 4.89
+  },
+  {
+    "text": "or whatever other medieval\nweapons you remember.",
+    "start": 4343.45,
+    "duration": 2.46
+  },
+  {
+    "text": "Well, actually some of that\nmeaning is in the \"pike\" vector",
+    "start": 4345.91,
+    "duration": 4.56
+  },
+  {
+    "text": "as well.",
+    "start": 4350.47,
+    "duration": 0.88
+  },
+  {
+    "text": "And so it'll say, yeah that's\ngood similarity with mace,",
+    "start": 4351.35,
+    "duration": 4.64
+  },
+  {
+    "text": "and staff and words\nlike that as well.",
+    "start": 4355.99,
+    "duration": 2.53
+  },
+  {
+    "text": "And in fact, we can work\nout which sense of \"pike\"",
+    "start": 4358.52,
+    "duration": 3.875
+  },
+  {
+    "text": "is intended by just sort\nof seeing which components",
+    "start": 4362.395,
+    "duration": 4.725
+  },
+  {
+    "text": "are similar to other words that\nare used in the same context.",
+    "start": 4367.12,
+    "duration": 4.63
+  },
+  {
+    "text": "And indeed there's actually\na much more surprising result",
+    "start": 4371.75,
+    "duration": 3.59
+  },
+  {
+    "text": "than that.",
+    "start": 4375.34,
+    "duration": 0.66
+  },
+  {
+    "text": "And this is a result that's\ndue to Sanjeev Arora, Tengyu",
+    "start": 4376.0,
+    "duration": 3.77
+  },
+  {
+    "text": "Ma, who is now on the Stanford\nfaculty and others in 2018.",
+    "start": 4379.77,
+    "duration": 5.818
+  },
+  {
+    "text": "And that's the following\nresult, which I'm not actually",
+    "start": 4385.588,
+    "duration": 2.292
+  },
+  {
+    "text": "going to explain.",
+    "start": 4387.88,
+    "duration": 1.23
+  },
+  {
+    "text": "But so if you think that\nthe vector for \"pike\"",
+    "start": 4389.11,
+    "duration": 5.42
+  },
+  {
+    "text": "is just a sum of the vectors\nfor the different senses.",
+    "start": 4394.53,
+    "duration": 5.54
+  },
+  {
+    "text": "Well, it should be you'd think\nthat it's just completely",
+    "start": 4400.07,
+    "duration": 4.84
+  },
+  {
+    "text": "impossible to reconstruct the\nsense vectors from the vector",
+    "start": 4404.91,
+    "duration": 5.64
+  },
+  {
+    "text": "for the word type.",
+    "start": 4410.55,
+    "duration": 3.33
+  },
+  {
+    "text": "Because normally, if I\nsay I've got two numbers,",
+    "start": 4413.88,
+    "duration": 4.32
+  },
+  {
+    "text": "the sum of them is 17, you just\nhave no information as to what",
+    "start": 4418.2,
+    "duration": 3.75
+  },
+  {
+    "text": "my two numbers are, right?",
+    "start": 4421.95,
+    "duration": 1.44
+  },
+  {
+    "text": "You can't resolve it.",
+    "start": 4423.39,
+    "duration": 1.77
+  },
+  {
+    "text": "And even worse, if I tell\nyou I've got three numbers",
+    "start": 4425.16,
+    "duration": 2.49
+  },
+  {
+    "text": "and they sum to 17.",
+    "start": 4427.65,
+    "duration": 2.91
+  },
+  {
+    "text": "But it turns out\nthat when we have",
+    "start": 4430.56,
+    "duration": 2.64
+  },
+  {
+    "text": "these high dimensional\nvector spaces that things",
+    "start": 4433.2,
+    "duration": 4.2
+  },
+  {
+    "text": "are so sparse in those high\ndimensional vector spaces",
+    "start": 4437.4,
+    "duration": 3.93
+  },
+  {
+    "text": "that you can use ideas from\nsparse coding to actually",
+    "start": 4441.33,
+    "duration": 4.23
+  },
+  {
+    "text": "separate out the different\nsenses, providing they're",
+    "start": 4445.56,
+    "duration": 3.81
+  },
+  {
+    "text": "relatively common.",
+    "start": 4449.37,
+    "duration": 2.14
+  },
+  {
+    "text": "So they show in\ntheir paper that you",
+    "start": 4451.51,
+    "duration": 2.06
+  },
+  {
+    "text": "can start with the\nvector of say \"pike\"",
+    "start": 4453.57,
+    "duration": 2.73
+  },
+  {
+    "text": "and actually separate\nout components",
+    "start": 4456.3,
+    "duration": 2.82
+  },
+  {
+    "text": "of that vector that correspond\nto different senses of the word",
+    "start": 4459.12,
+    "duration": 3.42
+  },
+  {
+    "text": "\"pike\".",
+    "start": 4462.54,
+    "duration": 0.66
+  },
+  {
+    "text": "And so here's an example at\nthe bottom of this slide, which",
+    "start": 4463.2,
+    "duration": 3.15
+  },
+  {
+    "text": "is for the word \"pike\".",
+    "start": 4466.35,
+    "duration": 3.54
+  },
+  {
+    "text": "Separate out that vector\ninto five different senses.",
+    "start": 4469.89,
+    "duration": 3.18
+  },
+  {
+    "text": "And so the one sense\nis close to the words",
+    "start": 4473.07,
+    "duration": 2.94
+  },
+  {
+    "text": "\"trousers\", \"blouse\",\n\"waistcoats\",",
+    "start": 4476.01,
+    "duration": 2.16
+  },
+  {
+    "text": "and that's that sort of\nclothing sense of \"tie\".",
+    "start": 4478.17,
+    "duration": 2.46
+  },
+  {
+    "text": "Another sense is close to\n\"wires\", \"cables\", \"wiring\",",
+    "start": 4480.63,
+    "duration": 3.96
+  },
+  {
+    "text": "\"electrical\".",
+    "start": 4484.59,
+    "duration": 0.69
+  },
+  {
+    "text": "So that's the tie sense of a tie\nused in the electrical stuff.",
+    "start": 4485.28,
+    "duration": 5.1
+  },
+  {
+    "text": "Then we have\n\"scoreline\", \"goalless\",",
+    "start": 4490.38,
+    "duration": 1.95
+  },
+  {
+    "text": "\"equalizer\" this is the\nsporting game sense of \"tie\".",
+    "start": 4492.33,
+    "duration": 3.93
+  },
+  {
+    "text": "This one also seems\nto in a different way",
+    "start": 4496.26,
+    "duration": 2.58
+  },
+  {
+    "text": "evoke a sporting\ngame sense of \"tie\".",
+    "start": 4498.84,
+    "duration": 3.33
+  },
+  {
+    "text": "And then there's\nfinally this one here.",
+    "start": 4502.17,
+    "duration": 1.89
+  },
+  {
+    "text": "Maybe my music is\njust really bad.",
+    "start": 4504.06,
+    "duration": 2.49
+  },
+  {
+    "text": "Maybe it's because you get ties\nin music when you tie notes",
+    "start": 4506.55,
+    "duration": 2.94
+  },
+  {
+    "text": "together, I guess.",
+    "start": 4509.49,
+    "duration": 0.99
+  },
+  {
+    "text": "So you get these different\nsenses out of it.",
+    "start": 4510.48,
+    "duration": 3.29
+  }
+]

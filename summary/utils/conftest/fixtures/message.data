@@ -1,0 +1,10 @@
+**Title:** Understanding Word Vectors and Neural Network Classifiers
+
+**Bullet Points:**
+* The main goal of today's class is to understand word vectors and neural network classifiers
+* The word2vec model is introduced, which learns word vectors by predicting surrounding words in a corpus
+* The model uses a probability distribution defined by the dot product between word vectors to predict surrounding words
+* The word2vec model is a bag of words model, which does not consider word order or position
+* The model learns to group similar words together in a high-dimensional vector space
+
+**Summary:** The lecture covers the concept of word vectors and neural network classifiers, specifically the word2vec model. The model learns word vectors by predicting surrounding words in a corpus, using a probability distribution defined by the dot product between word vectors. The model is a bag of words model, which does not consider word order or position, and learns to group similar words together in a high-dimensional vector space. Thelecture also introduces the concept of stochastic gradient descent, a modification of the gradient descent algorithm that is used to optimize the model's parameters.

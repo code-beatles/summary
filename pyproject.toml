@@ -28,7 +28,7 @@ pytest-mypy = "*"
 ruff = "^0"
 
 [tool.pytest.ini_options]
-addopts = "-xslv --disable-socket --allow-unix-socket"
+addopts = "-xslv"
 muffin_app = "summary"
 muffin_config = "summary.config.tests"
 python_files = "*test*.py"

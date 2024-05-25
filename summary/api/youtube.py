@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from muffin_rest import APIError
-from muffin_rest.peewee import PWRESTHandler
+from muffin_rest import APIError, PWRESTHandler
 
-from summary.models import Caption, Video
+from summary.models import Caption, Summary, Video
 from summary.models.schemas import CaptionSchema
 
 from . import api
@@ -37,4 +36,7 @@ class YouTube(PWRESTHandler):
 
     @PWRESTHandler.route("/youtube/{id}/summary")
     async def summary(self, request, resource: Video):
+        summary = await resource.summaries.first()
+        if summary is None:
+            summary = await Summary.generate(resource.captions)
         return []

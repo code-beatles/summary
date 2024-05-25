@@ -20,10 +20,14 @@ from muffin_peewee import Plugin as DB
 
 db = DB(app)
 
-# Setup API client
-from .youtube import Youtube
+# Setup API clients
+from .utils.youtube import Youtube
 
 youtube = Youtube(app)
+
+from .utils.together_ai import TogetherAI
+
+together_ai = TogetherAI(app)
 
 app.import_submodules("models", "api", "views")
 
