@@ -18,6 +18,9 @@ class Video(AIOModel):
     async def update_captions(self):
         if not self.captions_updated:
             res = await youtube.get_captions(self.id)
+            self.captions_updated = dt.datetime.now(tz=dt.timezone.utc)
+            await self.save()
+
             return (
                 await Caption.insert_many(
                     [
@@ -30,13 +33,14 @@ class Video(AIOModel):
                         for item in res
                     ]
                 )
-                .on_conflict_ignore()
+                .on_conflict(
+                    conflict_target=(Caption.video, Caption.language),
+                    update={Caption.url: Caption.url},
+                )
                 .returning(Caption)
             )
-            self.caption_updated = dt.datetime.unow()
-            await self.save()
 
-        return self.captions
+        return await self.captions
 
 
 @db.register

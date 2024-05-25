@@ -37,3 +37,14 @@ async def test_youtube_caption(client, captions):
     video = await Video.get(id=video_id)
     assert video
     assert await video.captions
+
+
+async def test_youtube_summary(client, captions):
+    video_id = "gqaHkPEZAew"
+    res = await client.get(f"/api/v1/youtube/{video_id}/summary")
+    assert res.status_code == 200
+    data = await res.json()
+    assert data
+    assert data["keynotes"]
+    assert data["title"]
+    assert data["summary"]

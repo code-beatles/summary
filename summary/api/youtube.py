@@ -38,5 +38,9 @@ class YouTube(PWRESTHandler):
     async def summary(self, request, resource: Video):
         summary = await resource.summaries.first()
         if summary is None:
-            summary = await Summary.generate(resource.captions)
+            captions = await resource.update_captions()
+            captions.sort(key=lambda c: c.auto_generated)
+            caption = captions[0]
+            await caption.download()
+            summary = await Summary.generate(caption)
         return SummarySchema().dump(summary)
