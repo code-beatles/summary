@@ -21,6 +21,9 @@ class Video(AIOModel):
             self.captions_updated = dt.datetime.now(tz=dt.timezone.utc)
             await self.save()
 
+            if not res:
+                return []
+
             return (
                 await Caption.insert_many(
                     [

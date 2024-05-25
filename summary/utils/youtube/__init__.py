@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from httpx import AsyncClient
 from muffin_apiclient import Plugin as APIClient
+from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 from youtube_transcript_api._transcripts import (
     TranscriptList,
     TranscriptListFetcher,
@@ -19,9 +20,13 @@ class Youtube(APIClient):
 
     async def get_captions(self, video_id: str):
         html = await self.api.watch(params={"v": video_id})
-        tl = TranscriptList.build(
-            client, video_id, fetcher._extract_captions_json(html, video_id)
-        )
+        try:
+            tl = TranscriptList.build(
+                client, video_id, fetcher._extract_captions_json(html, video_id)
+            )
+        except CouldNotRetrieveTranscript:
+            return []
+
         tss = [
             *tl._generated_transcripts.values(),
             *tl._manually_created_transcripts.values(),

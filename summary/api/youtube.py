@@ -40,6 +40,9 @@ class YouTube(PWRESTHandler):
         if summary is None:
             captions = await resource.update_captions()
             captions.sort(key=lambda c: c.auto_generated)
+            if not captions:
+                return None
+
             caption = captions[0]
             await caption.download()
             summary = await Summary.generate(caption)
