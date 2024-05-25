@@ -20,6 +20,11 @@ from muffin_peewee import Plugin as DB
 
 db = DB(app)
 
+# Setup templates engine
+from muffin_jinja2 import Plugin as Jinja2
+
+jinja = Jinja2(app, auto_reload=True)
+
 # Setup API clients
 from .utils.youtube import Youtube
 

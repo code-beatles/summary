@@ -39,7 +39,7 @@ rollback: setup
 
 MUFFIN_PORT ?= 5555
 .PHONY: run dev
-run dev: setup
+run dev: setup migrate
 	@poetry run uvicorn --loop asyncio --reload --reload-dir $(PACKAGE) --port $(MUFFIN_PORT) $(PACKAGE):app
 
 .PHONY: shell

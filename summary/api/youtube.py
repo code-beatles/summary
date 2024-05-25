@@ -3,7 +3,7 @@ from __future__ import annotations
 from muffin_rest import APIError, PWRESTHandler
 
 from summary.models import Caption, Summary, Video
-from summary.models.schemas import CaptionSchema
+from summary.models.schemas import CaptionSchema, SummarySchema
 
 from . import api
 
@@ -39,4 +39,4 @@ class YouTube(PWRESTHandler):
         summary = await resource.summaries.first()
         if summary is None:
             summary = await Summary.generate(resource.captions)
-        return []
+        return SummarySchema().dump(summary)

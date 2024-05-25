@@ -7,11 +7,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+aiofile = "*"
+uvicorn = "*"
 aiosqlite = "*"
 muffin = "*"
 muffin-rest = { extras = ["peewee"], version = "*" }
 muffin-peewee-aio = "*"
 muffin-admin = "*"
+muffin-jinja2 = "*"
 muffin-apiclient = { extras = ["httpx"], version = "*" }
 blackboxprotobuf = "*"
 youtube-transcript-api = "*"
@@ -27,8 +30,16 @@ pytest-mypy = "*"
 # pytest-socket = "*"
 ruff = "^0"
 
+[tool.mypy]
+check_untyped_defs = true
+exclude = ["summary/config"]
+ignore_missing_imports = true
+install_types = true
+non_interactive = true
+packages = ["summary"]
+
 [tool.pytest.ini_options]
-addopts = "-xslv"
+addopts = "summary -xslv"
 muffin_app = "summary"
 muffin_config = "summary.config.tests"
 python_files = "*test*.py"

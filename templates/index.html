@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script src="/static/app.js"></script>
+<div class="row">
+  <div class="col">
+    <h1>
+      {{app.cfg.NAME|title}} v{{app.cfg.VERSION}} is running
+    </h1>
+  </div>
+  <div class="mb-3 row">
+    <form onsubmit="loadSummary()">
+      <label for="url" class="form-label">Youtube address</label>
+      <input type="text" class="form-control" id="url" placeholder="Insert and press enter">
+    </form>
+  </div>
+  {% endblock %}

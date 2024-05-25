@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from summary import app
+from summary import app, jinja
 
 
 @app.route("/")
 async def index(request):
-    return f"{app.cfg.NAME} v{app.cfg.VERSION}"
+    return await jinja.render("index.html")
