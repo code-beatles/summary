@@ -9,9 +9,12 @@ readme = "README.md"
 python = "^3.11"
 aiosqlite = "*"
 muffin = "*"
-muffin-rest = "*"
+muffin-rest = { extras = ["peewee"], version = "*" }
 muffin-peewee-aio = "*"
 muffin-admin = "*"
+muffin-apiclient = { extras = ["httpx"], version = "*" }
+blackboxprotobuf = "*"
+youtube-transcript-api = "*"
 
 [tool.poetry.group.dev]
 optional = true
@@ -21,7 +24,7 @@ ipdb = "^0"
 pre-commit = "^3"
 pytest-aio = "^1"
 pytest-mypy = "*"
-pytest-socket = "*"
+# pytest-socket = "*"
 ruff = "^0"
 
 [tool.pytest.ini_options]

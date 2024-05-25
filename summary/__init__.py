@@ -20,6 +20,11 @@ from muffin_peewee import Plugin as DB
 
 db = DB(app)
 
-app.import_submodules("api", "views")
+# Setup API client
+from .youtube import Youtube
+
+youtube = Youtube(app)
+
+app.import_submodules("models", "api", "views")
 
 # ruff: noqa: N814,E402
